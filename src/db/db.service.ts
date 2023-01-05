@@ -4,6 +4,7 @@ import { createPool } from 'mysql2';
 
 @Injectable()
 export class DbService {
+  pool: any;
   constructor(config: ConfigService) {
     this.pool = createPool({
       host: config.get('DB_HOST'),
@@ -14,6 +15,4 @@ export class DbService {
       connectionLimit: config.get('DB_CONNLIMIT'),
     });
   }
-
-  pool: any;
 }
