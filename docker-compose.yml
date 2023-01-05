@@ -13,6 +13,19 @@ services:
     volumes:
       - db:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  mysqldb-test:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'integrationdb'
+      MYSQL_USER: 'apiClient'
+      MYSQL_PASSWORD: 'Pomeroy#123'
+      MYSQL_ROOT_PASSWORD: 'R00tP@ssw0rd'
+    ports:
+      - '3307:3307'
+    volumes:
+      - db:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 volumes:
   db:
     driver: local
