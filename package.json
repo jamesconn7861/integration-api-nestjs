@@ -1,8 +1,8 @@
 {
   "name": "integration-api-nestjs",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "version": "0.2.1",
+  "description": "Api backend for the integration toolkit webpage. Built with NestJS & mysql2.",
+  "author": "ConnApps",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -13,11 +13,15 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "db:test:rm": "docker compose rm mysqldb-test -s -f -v",
+    "db:test:up": "docker compose up mysqldb-test -d",
+    "db:test:restart": "npm run db:test:rm && npm run db:test:up",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "pretest:e2e": "npm run db:test:restart",
+    "test:e2e": "dotenv -e test.env -- jest --watchAll --no-cache --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
@@ -25,7 +29,10 @@
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/platform-fastify": "^9.2.1",
+    "dotenv": "^16.0.3",
+    "dotenv-cli": "^6.0.0",
     "mysql2": "^2.3.3",
+    "pactum": "^3.3.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
   },
