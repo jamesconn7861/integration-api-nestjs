@@ -1,6 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { MYSQL_CONN } from 'src/constants';
-import { DbService } from 'src/db/db.service';
+import { Injectable } from '@nestjs/common';
+import { DbService } from '../db/db.service';
 import { LabelData } from './dtos';
 
 @Injectable()
