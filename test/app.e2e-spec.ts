@@ -6,8 +6,6 @@ import { DbService } from '../src/db/db.service';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
-  let dbService: DbService;
-  let checkValue: string;
 
   beforeAll(async () => {
     const moduleRef: TestingModule = await Test.createTestingModule({
@@ -18,13 +16,35 @@ describe('AppController (e2e)', () => {
     await app.init();
     await app.listen(3003);
 
-    dbService = app.get(DbService);
     pactum.request.setBaseUrl('http://localhost:3003');
-    checkValue = '704565465';
+  });
+
+  describe('AppData', () => {
+    describe('Get app data', () => {
+      it('should return app init data.', () => {
+        return pactum
+          .spec()
+          .get('/cached/app-data')
+          .expectBodyContains('tableSchema')
+          .expectStatus(200);
+      });
+    });
+
+    describe('Update app data', () => {
+      it('should update app init data.', () => {
+        return pactum
+          .spec()
+          .post('/cached/update-app-data')
+          .withBody({ pass: 'upd@t3' })
+          .expectBodyContains('Update Complete')
+          .expectStatus(201)
+          .inspect();
+      });
+    });
   });
 
   describe('Labels', () => {
-    describe('Upload', () => {
+    describe('Upload label(s)', () => {
       it('should upload one label.', () => {
         return pactum
           .spec()
@@ -55,12 +75,12 @@ describe('AppController (e2e)', () => {
       });
     });
 
-    describe('Find', () => {
+    describe('Get labels by table and user', () => {
       it('should return labels based on the table and user', () => {
         return pactum
           .spec()
           .get('/labels/order_numbers/jconn')
-          .expectBodyContains(checkValue)
+          .expectBodyContains('jconn')
           .expectStatus(200);
       });
     });
