@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as pactum from 'pactum';
 import { AppModule } from './../src/app.module';
-import { DbService } from '../src/db/db.service';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -82,6 +81,65 @@ describe('AppController (e2e)', () => {
           .get('/labels/order_numbers/jconn')
           .expectBodyContains('jconn')
           .expectStatus(200);
+      });
+    });
+  });
+
+  describe('Order Tracking', () => {
+    describe('Upload order(s)', () => {
+      it('should upload a new order', () => {
+        return pactum
+          .spec()
+          .post('/orders/upload')
+          .withBody({
+            tech: 'jconn',
+            startTime: new Date()
+              .toISOString()
+              .slice(0, 19)
+              .replace('T', ' ')
+              .toString(),
+            orders: ['712345678', '712345679'],
+          })
+          .expectStatus(201)
+          .inspect();
+      });
+    });
+
+    describe('Edit order', () => {
+      it('should edit a order', () => {
+        return pactum
+          .spec()
+          .patch('/orders/edit')
+          .withBody({
+            order_number: '712345678',
+            tech: 'jconn',
+            end_time: new Date().toISOString().slice(0, 19).replace('T', ' '),
+            is_active: '0',
+            note: 'testing',
+          })
+          .expectStatus(200);
+      });
+    });
+
+    describe('Delete order(s)', () => {
+      it('should delete orders', () => {
+        return pactum
+          .spec()
+          .delete('/orders/delete')
+          .withBody({
+            orderNumbers: ['712345679'],
+          })
+          .expectStatus(200);
+      });
+    });
+
+    describe('Get orders', () => {
+      it('should get orders by user', () => {
+        return pactum
+          .spec()
+          .get('/orders/jconn')
+          .expectStatus(200)
+          .expectBodyContains('testing');
       });
     });
   });
