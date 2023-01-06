@@ -5,6 +5,7 @@ import { DbModule } from './db/db.module';
 import { LabelsModule } from './labels/labels.module';
 import { ConfigModule } from '@nestjs/config';
 import { CachedModule } from './cached/cached.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { CachedModule } from './cached/cached.module';
     DbModule,
     LabelsModule,
     CachedModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],
