@@ -1,56 +1,54 @@
 {
-    "MySQL-Table-Schema": {
-      "version": "2.0",
-      "updateDate": "2022-11-22T00:00:00.000Z"
-    },
+    "version": "2.0",
+    "updateDate": "2022-11-22T00:00:00.000Z",
     "tables": [
         {
-            "name": "asset_tags",
-            "friendly_name": "Asset Tags",
-            "file_locations": ["/MySQL_Labels/MySQL_Asset_Tags.btw"],
+            "id": "asset_tags",
+            "displayName": "Asset Tags",
+            "filePaths": ["/MySQL_Labels/MySQL_Asset_Tags.btw"],
             "columns": 
             [
                 {
-                    "column name": "asset_tag",
-                    "column friendly name": "Asset Tag",
-                    "datatype": "text",
-                    "nullable": "false"
+                    "id": "asset_tag",
+                    "displayName": "Asset Tag",
+                    "dataType": "text",
+                    "nullable": false
                 },
                 {
-                    "column name": "quantity",
-                    "column friendly name": "Quantity",
-                    "datatype": "numeric",
-                    "default value": "1"
+                    "id": "quantity",
+                    "displayName": "Quantity",
+                    "dataType": "numeric",
+                    "defaultValue": "1"
                 },
                 {
-                    "column name": "serialize",
-                    "column friendly name": "Serialize",
-                    "datatype": "numeric",
-                    "default value": "1"
+                    "id": "serialize",
+                    "displayName": "Serialize",
+                    "dataType": "numeric",
+                    "defaultValue": "1"
                 },
                 {
-                    "column name": "username",
-                    "datatype": "text",
+                    "id": "username",
+                    "dataType": "text",
                     "nullable": "false",
                     "hidden" : "true"
                 }
             ]
         },
         {
-            "name": "covestro",
-            "friendly_name": "Covestro",
-            "file_locations": ["/MySQL_Labels/MySQL_Covestro_Tags.btw"],
+            "id": "covestro",
+            "displayName": "Covestro",
+            "filePaths": ["/MySQL_Labels/MySQL_Covestro_Tags.btw"],
             "columns": 
             [
                 {
-                    "column name": "serial_number",
-                    "column friendly name": "Serial Number",
-                    "datatype": "text",
+                    "id": "serial_number",
+                    "displayName": "Serial Number",
+                    "dataType": "text",
                     "nullable": "false"
                 },
                 {
-                    "column name": "username",
-                    "datatype": "text",
+                    "id": "username",
+                    "dataType": "text",
                     "nullable": "false",
                     "hidden" : "true"
                     
@@ -58,10 +56,10 @@
             ]
         },
         {
-            "name": "freeman",
-            "friendly_name": "Freeman",
+            "id": "freeman",
+            "displayName": "Freeman",
             "notes": "Use \"laptop\" for all dell PCs.",
-            "file_locations": [
+            "filePaths": [
                 "/MySQL_Labels/MySQL_Freeman_Tags.btw",
                 "/MySQL_Labels/MySQL_Freeman_Tags_Small.btw",
                 "/MySQL_Labels/MySQL_Freeman_Labels.btw"
@@ -69,31 +67,30 @@
             "columns": 
             [
                 {
-                    "column name": "serial_number",
-                    "column friendly name": "Serial Number",
-                    "datatype": "text",
+                    "id": "serial_number",
+                    "displayName": "Serial Number",
+                    "dataType": "text",
                     "nullable": "false"
                 },
                 {
-                    "column name": "type",
-                    "column friendly name": "Device Type",
-                    "column function" : "Calculate",
-                    "datatype": "dropdown",
+                    "id": "type",
+                    "displayName": "Device Type",
+                    "dataType": "dropdown",
                     "source" : ["Laptop", "Mac", "iPad", "Moby"],
                     "nullable": "false"
                 },
                 {
-                    "column name": "username",
-                    "datatype": "text",
+                    "id": "username",
+                    "dataType": "text",
                     "nullable": "false",
                     "hidden" : "true"
                 }
             ]
         },
         {
-            "name": "order_numbers",
-            "friendly_name": "Order Numbers",
-            "file_locations": [
+            "id": "order_numbers",
+            "displayName": "Order Numbers",
+            "filePaths": [
                 "/MySQL_Labels/MySQL_Order_Numbers.btw",
                 "/MySQL_Labels/MySQL_Order_Numbers_Left.btw",
                 "/MySQL_Labels/MySQL_Order_Numbers_Right.btw"
@@ -101,151 +98,151 @@
             "columns": 
             [
                 {
-                    "column name": "data",
-                    "column friendly name": "Order Number",
-                    "datatype": "text",
+                    "id": "data",
+                    "displayName": "Order Number",
+                    "dataType": "text",
                     "nullable": "false"
                 },
                 {
-                    "column name": "quantity",
-                    "column friendly name": "Quantity",
-                    "datatype": "numeric",
-                    "default value": "1"
+                    "id": "quantity",
+                    "displayName": "Quantity",
+                    "dataType": "numeric",
+                    "defaultValue": "1"
                 },
                 {
-                    "column name": "serialize",
-                    "column friendly name": "Serialize",
-                    "datatype": "numeric",
-                    "default value": "1"
+                    "id": "serialize",
+                    "displayName": "Serialize",
+                    "dataType": "numeric",
+                    "defaultValue": "1"
                 },
                 {
-                    "column name": "username",
-                    "datatype": "text",
+                    "id": "username",
+                    "dataType": "text",
                     "nullable": "false",
                     "hidden" : "true"
                 }
             ]
         },
         {
-            "name": "part_and_serial",
-            "friendly_name": "Part With Serial",
-            "file_locations": ["/MySQL_Labels/MySQL_Labels/Part_with_Serial.btw"],
+            "id": "part_and_serial",
+            "displayName": "Part With Serial",
+            "filePaths": ["/MySQL_Labels/MySQL_Labels/Part_with_Serial.btw"],
             "columns": 
             [
                 {
-                    "column name": "part_number",
-                    "column friendly name": "Part Number",
-                    "datatype": "text",
+                    "id": "part_number",
+                    "displayName": "Part Number",
+                    "dataType": "text",
                     "nullable": "false"
                 },
                 {
-                    "column name": "serial_number",
-                    "column friendly name": "Serial Number",
-                    "datatype": "text",
+                    "id": "serial_number",
+                    "displayName": "Serial Number",
+                    "dataType": "text",
                     "nullable": "false"
                 },
                 {
-                    "column name": "username",
-                    "datatype": "text",
+                    "id": "username",
+                    "dataType": "text",
                     "nullable": "false",
                     "hidden" : "true"
                 }
             ]
         },
         {
-            "name": "simmons",
-            "friendly_name": "Simmons",
-            "file_locations": ["/MySQL_Labels/MySQL_Simmons_Tags.btw"],
+            "id": "simmons",
+            "displayName": "Simmons",
+            "filePaths": ["/MySQL_Labels/MySQL_Simmons_Tags.btw"],
             "columns": 
             [
                 {
-                    "column name": "simmons_user",
-                    "column friendly name": "Simmons User",
-                    "datatype": "text"
+                    "id": "simmons_user",
+                    "displayName": "Simmons User",
+                    "dataType": "text"
                 },
                 {
-                    "column name": "serial_number",
-                    "column friendly name": "Serial Number",
-                    "datatype": "text",
+                    "id": "serial_number",
+                    "displayName": "Serial Number",
+                    "dataType": "text",
                     "nullable": "false"
                 },
                 {
-                    "column name": "mac_address",
-                    "column friendly name": "Mac Address",
-                    "datatype": "text",
+                    "id": "mac_address",
+                    "displayName": "Mac Address",
+                    "dataType": "text",
                     "nullable": "false"
                 },
                 {
-                    "column name": "username",
-                    "datatype": "text",
+                    "id": "username",
+                    "dataType": "text",
                     "hidden" : "true",
                     "nullable": "false"
                 }
             ]
         },
         {
-            "name": "barcode_and_type",
-            "friendly_name": "Part & Serial Numbers",
+            "id": "barcode_and_type",
+            "displayName": "Part & Serial Numbers",
             "notes": "Multiplier format no longer requires a \"x\" at the beginning. Please only enter numeric values.",
-            "file_locations": ["/MySQL_Labels/MySQL_Multi_Barcode.btw"],
+            "filePaths": ["/MySQL_Labels/MySQL_Multi_Barcode.btw"],
             "columns": 
             [
                 {
-                    "column name": "data",
-                    "column friendly name": "Data",
-                    "datatype": "text",
+                    "id": "data",
+                    "displayName": "Data",
+                    "dataType": "text",
                     "nullable": "false"
                 },
                 {
-                    "column name": "quantity",
-                    "column friendly name": "Quantity",
-                    "datatype": "numeric",
-                    "default value": "1"
+                    "id": "quantity",
+                    "displayName": "Quantity",
+                    "dataType": "numeric",
+                    "defaultValue": "1"
                 },
                 {
-                    "column name": "serialize",
-                    "column friendly name": "Serialize",
-                    "datatype": "numeric",
-                    "default value": "1"
+                    "id": "serialize",
+                    "displayName": "Serialize",
+                    "dataType": "numeric",
+                    "defaultValue": "1"
                 },
                 {
-                    "column name": "type",
-                    "column friendly name": "Type",
-                    "datatype": "text",
-                    "default value": "Part"
+                    "id": "type",
+                    "displayName": "Type",
+                    "dataType": "text",
+                    "defaultValue": "Part"
                 },
                 {
-                    "column name": "multiplier",
-                    "column friendly name": "Multiplier",
-                    "datatype": "text"
+                    "id": "multiplier",
+                    "displayName": "Multiplier",
+                    "dataType": "text"
                 },
                 {
-                    "column name": "username",
-                    "datatype": "text",
+                    "id": "username",
+                    "dataType": "text",
                     "nullable": "false",
                     "hidden" : "true"
                 }
             ]
         },
         {
-            "name": "whirlpool",
-            "friendly_name": "Whirlpool",
+            "id": "whirlpool",
+            "displayName": "Whirlpool",
             "notes": "Whirlpool tags are each created from unique seeds. If you have already uploaded a serial number, it can not be uploaded again.",
-            "file_locations": [
+            "filePaths": [
                 "/MySQL_Labels/MySQL_Whirlpool_Tags.btw",
                 "/MySQL_Labels/MySQL_Whirlpool_Labels.btw"
             ],
             "columns": 
             [
                 {
-                    "column name": "serial_number",
-                    "column friendly name": "Serial Number",
-                    "datatype": "text",
+                    "id": "serial_number",
+                    "displayName": "Serial Number",
+                    "dataType": "text",
                     "nullable": "false"
                 },
                 {
-                    "column name": "username",
-                    "datatype": "text",
+                    "id": "username",
+                    "dataType": "text",
                     "nullable": "false",
                     "hidden" : "true"
                 }

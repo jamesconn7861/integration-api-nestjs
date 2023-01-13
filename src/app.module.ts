@@ -5,7 +5,9 @@ import { DbModule } from './db/db.module';
 import { LabelsModule } from './labels/labels.module';
 import { ConfigModule } from '@nestjs/config';
 import { CachedModule } from './cached/cached.module';
-import { OrderModule } from './order/order.module';
+import { SshModule } from './ssh/ssh.module';
+import { VlanChangerModule } from './vlan-changer/vlan-changer.module';
+
 
 @Module({
   imports: [
@@ -15,7 +17,8 @@ import { OrderModule } from './order/order.module';
     DbModule,
     LabelsModule,
     CachedModule,
-    OrderModule,
+    SshModule,
+    VlanChangerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

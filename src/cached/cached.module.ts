@@ -4,6 +4,7 @@ import { CachedController } from './cached.controller';
 
 @Module({
   providers: [CachedService],
-  controllers: [CachedController]
+  controllers: [CachedController],
+  exports: [CachedService],
 })
 export class CachedModule {}
