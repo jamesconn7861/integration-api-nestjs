@@ -72,10 +72,10 @@ export class VlanChangerService {
     if (!foundSwitch) return;
 
     /*
-      Check wether request was made with the switch number or bench name.
-      If request was made with the switch number, find the exact match and return all ports.
-      If requet was made with the bench name, find the exact match (case insensative) and return pre-configured port range.
-      */
+    Check if request was made with the switch number or bench name.
+    If request was made with the switch number, find the exact match and return all ports.
+    If requet was made with the bench name, find the exact match (case insensative) and return pre-configured port range.
+    */
 
     if (typeof benchId === 'number') {
       return { ...foundSwitch, range: '1-48' };
