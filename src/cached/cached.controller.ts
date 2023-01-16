@@ -33,6 +33,7 @@ export class CachedController {
     return this.cachedService.getVlanSchemaById(vlanId);
   }
 
+  // TODO Add actual authentication for routes. Possibly with JWT and passport.
   @Post('update-app-data')
   updateAppData(@Body() updateBody: UpdateBody) {
     if (updateBody.pass != 'upd@t3') {

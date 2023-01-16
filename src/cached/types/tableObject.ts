@@ -1,3 +1,5 @@
+// TODO Add class-validation decorators.
+
 export class TableObject {
   id: string;
   displayName?: string;
@@ -6,6 +8,7 @@ export class TableObject {
   columns: TableProperites[];
 }
 
+// TODO Add class-validation decorators and move to independant file.
 export class TableProperites {
   id: string;
   displayName?: string;

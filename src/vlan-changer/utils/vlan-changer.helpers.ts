@@ -1,5 +1,11 @@
 import { ChangeParams } from '../types';
 
+/*
+  Moved these out of the main service. They have
+  no dependencies and makes the main service
+  much more readable.
+*/
+
 async function createRangeString(changeParams: ChangeParams) {
   let baseString: string = `eth${changeParams.benchId}/1`;
 
@@ -48,6 +54,14 @@ async function createRangeString(changeParams: ChangeParams) {
   }
 }
 
+/*
+  This function is a little messy, but I wanted to keep it short. 
+  The data from the switch comes back and is parsed into individual 
+  strings in the following format:
+  Eth108/1/1    --                 notconnec 103       auto    auto    10/100/1000BaseT
+  Each line is then broken down into individual componets (port, status, description and vlan).
+  This will change when switching over to https requests instead of SSH.
+*/
 async function parseSwitchStatus(
   swtichStatusString: string,
   rangeFilter?: string[],

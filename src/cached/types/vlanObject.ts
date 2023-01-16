@@ -1,3 +1,5 @@
+// TODO Add class-validation decorators.
+
 export class VlanObject {
   id: number;
   name: string;

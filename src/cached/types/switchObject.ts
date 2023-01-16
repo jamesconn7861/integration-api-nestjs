@@ -1,3 +1,5 @@
+// TODO Add class-validation decorators.
+
 export class SwitchObject {
   id: string;
   switch: number;
