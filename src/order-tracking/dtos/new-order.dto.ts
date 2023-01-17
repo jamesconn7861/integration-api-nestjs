@@ -1,15 +1,15 @@
 import {
-  IsNumberString,
   IsNotEmpty,
   IsNumber,
   IsAlpha,
   Matches,
+  IsArray,
 } from 'class-validator';
 
 export class NewOrderDto {
   @IsNotEmpty()
-  @IsNumberString()
-  orderNumber: number;
+  @IsArray()
+  orderNumbers: number[];
 
   @IsAlpha()
   @IsNotEmpty()
