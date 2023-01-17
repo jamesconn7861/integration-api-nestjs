@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { SshService } from 'src/ssh/ssh.service';
+import { SshService } from '../ssh/ssh.service';
 import { SetVlansDto } from './dtos';
-import { SwitchObject, VlanObject } from 'src/cached/types';
+import { SwitchObject, VlanObject } from '../cached/types';
 import { createRangeString, parseSwitchStatus } from './utils';
 import { ChangeParams } from './types';
-import { CachedService } from 'src/cached/cached.service';
+import { CachedService } from '../cached/cached.service';
 
 @Injectable()
 export class VlanChangerService {

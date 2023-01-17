@@ -6,7 +6,7 @@ import {
   IsNumberString,
   IsString,
   Matches,
-} from 'class-validator/types/decorator/decorators';
+} from 'class-validator';
 
 export class EditOrderDto {
   @IsNumberString()

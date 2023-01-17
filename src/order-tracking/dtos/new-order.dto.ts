@@ -1,10 +1,10 @@
-import { IsNumberString } from 'class-validator';
 import {
+  IsNumberString,
   IsNotEmpty,
+  IsNumber,
   IsAlpha,
   Matches,
-} from 'class-validator/types/decorator/decorators';
-import { IsNumber } from 'class-validator/types/decorator/typechecker/IsNumber';
+} from 'class-validator';
 
 export class NewOrderDto {
   @IsNotEmpty()
