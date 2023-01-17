@@ -1,8 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as pactum from 'pactum';
-import { AppModule } from './../src/app.module';
-import { DbService } from '../src/db/db.service';
+import { AppModule } from '../src/app.module';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -86,7 +85,43 @@ describe('AppController (e2e)', () => {
     });
   });
 
+  describe('Vlan Changer', () => {
+    describe('Change vlans', () => {
+      it('should change the vlan.', () => {
+        return pactum
+          .spec()
+          .post('/vlan-changer/change')
+          .withBody({
+            user: 'jconn',
+            ports: [1, 1],
+            vlan: 720,
+            benchId: '131',
+          })
+          .expectStatus(201);
+      }, 10000);
+    });
+
+    describe('Check vlans', () => {
+      it('should check the vlans.', () => {
+        return pactum
+          .spec()
+          .get('/vlan-changer/131')
+          .expectStatus(200)
+          .expectBodyContains('720');
+      });
+    });
+  });
+
   afterAll(() => {
+    pactum
+      .spec()
+      .post('/vlan-changer/change')
+      .withBody({
+        user: 'jconn',
+        ports: [1, 1],
+        vlan: 753,
+        benchId: '131',
+      });
     app.close();
   });
 });
