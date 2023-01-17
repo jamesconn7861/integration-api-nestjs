@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DbService } from 'src/db/db.service';
+import { DbService } from '../db/db.service';
 import { EditOrderDto, NewOrderDto } from './dtos';
 
 @Injectable()
