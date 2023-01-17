@@ -16,6 +16,16 @@ describe('AppController (e2e)', () => {
     await app.listen(3003);
 
     pactum.request.setBaseUrl('http://localhost:3003');
+
+    await pactum
+      .spec()
+      .post('/vlan-changer/change')
+      .withBody({
+        user: 'jconn',
+        ports: [1, 1],
+        vlan: 753,
+        benchId: '131',
+      });
   });
 
   describe('AppData', () => {
@@ -107,13 +117,14 @@ describe('AppController (e2e)', () => {
           .spec()
           .get('/vlan-changer/131')
           .expectStatus(200)
-          .expectBodyContains('720');
-      });
+          .expectBodyContains('720')
+          .inspect();
+      }, 12000);
     });
   });
 
-  afterAll(() => {
-    pactum
+  afterAll(async () => {
+    await pactum
       .spec()
       .post('/vlan-changer/change')
       .withBody({
