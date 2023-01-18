@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { ok } from 'assert';
+import { resourceLimits } from 'worker_threads';
 import { DbService } from '../db/db.service';
 import { EditOrderDto, NewOrderDto } from './dtos';
-import { OrderArrayDto } from './dtos/order-array.dto';
+import { DeleteOrderDto } from './dtos/delete-order.dto';
 
 @Injectable()
 export class OrderTrackingService {
@@ -11,9 +13,9 @@ export class OrderTrackingService {
     let queryString: string;
 
     if (userId === 'all') {
-      queryString = `select * from integrationdb.order_tracking where is_active in (${isActive}) Limit 500`;
+      queryString = `select * from integrationdb.order_tracking where isActive in (${isActive}) Limit 500`;
     } else {
-      queryString = `select * from integrationdb.order_tracking where tech = '${userId}' and is_active in (${isActive}) Limit 500`;
+      queryString = `select * from integrationdb.order_tracking where tech = '${userId}' and isActive in (${isActive}) Limit 500`;
     }
 
     const [rows, _fields] = await this.db.pool.promise().query(queryString);
@@ -23,36 +25,75 @@ export class OrderTrackingService {
   async getOrderById(orderId: number) {
     const [rows, _fields] = await this.db.pool
       .promise()
-      .query('select * from `order_tracking` where order_number = ?', [
-        orderId,
-      ]);
+      .query('select * from `order_tracking` where orderId = ?', [orderId]);
     return [rows];
   }
 
-  async uploadOrders(orderDetails: NewOrderDto) {
+  async uploadOrders(dto: NewOrderDto) {
     let queryString: string;
     let queryArray: any[][] = [];
 
-    orderDetails.orderNumbers.forEach((orderNumber: number) => {
+    dto.orderNumbers.forEach((orderId: number) => {
       queryArray.push([
-        orderNumber,
-        orderDetails.tech,
-        orderDetails.startTime,
-        orderDetails.isActive,
-        orderDetails.hasIssue,
+        orderId,
+        dto.tech,
+        dto.startTime,
+        dto.isActive,
+        dto.hasIssue,
       ]);
     });
 
-    if (orderDetails.orderNumbers.length > 1) {
-      queryString = `insert ignore into integrationdb.order_tracking (order_number, tech, start_time, is_active, has_issue) values ?`;
+    if (dto.orderNumbers.length > 1) {
+      queryString =
+        'insert ignore into `order_tracking` (orderId, tech, startTime, isActive, hasIssue) values ?';
     } else {
-      queryString = `insert into integrationdb.order_tracking (order_number, tech, start_time, is_active, has_issue) values ?`;
+      queryString =
+        'insert into `order_tracking` (orderId, tech, startTime, isActive, hasIssue) values ?';
     }
 
     return await this.db.pool.promise().query(queryString, [queryArray]);
   }
 
-  async updateOrder(updateDetails: EditOrderDto) {}
+  async updateOrder(dto: EditOrderDto) {
+    let queryArray: string[] = [];
 
-  async deleteOrderById(orderId: number) {}
+    Object.keys(dto).forEach((oKey: string) => {
+      if (!['orderId', 'tech', 'startTime'].includes(oKey)) {
+        if (typeof dto[oKey] == 'string') {
+          queryArray.push(`${oKey} = "${dto[oKey]}"`);
+        } else {
+          queryArray.push(`${oKey} = ${dto[oKey]}`);
+        }
+      }
+    });
+
+    let queryString: string = `update integrationdb.order_tracking set ${queryArray.join(
+      ', ',
+    )} where orderId = ? and tech = ?`;
+
+    const [results, _err] = await this.db.pool
+      .promise()
+      .query(queryString, [dto.orderId, dto.tech]);
+
+    if (+results['changedRows'] > 0 && +results['affectedRows'] > 0) {
+      return results;
+    } else if (+results['affectedRows'] > 0) {
+      return {
+        message: 'Row already contains requested data. No changes made.',
+      };
+    } else if (+results['affectedRows'] == 0) {
+      return {
+        message: 'Order not found. This is likely due to a invalid username.',
+      };
+    }
+  }
+
+  async deleteOrderById(dto: DeleteOrderDto) {
+    return await this.db.pool
+      .promise()
+      .query('delete from `order_tracking` where orderId in (?) and tech = ?', [
+        dto.orderIds.join(', '),
+        dto.tech,
+      ]);
+  }
 }
