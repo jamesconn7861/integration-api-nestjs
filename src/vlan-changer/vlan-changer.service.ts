@@ -43,8 +43,6 @@ export class VlanChangerService {
     changeParams.skipedPorts = result['skippedPorts'];
 
     let sshCommand = `conf t ; int ${changeParams.rangeString} ; switchport access vlan ${changeParams.vlanId}`;
-    console.log(changeParams);
-    console.log(sshCommand);
 
     const sshResponse: Object = await this.sshClient.sendCommand(
       `conf t ; int ${changeParams.rangeString} ; switchport access vlan ${changeParams.vlanId}`,
