@@ -1,14 +1,17 @@
 import {
+  Delete,
+  Get,
+  Patch,
+  Post,
   Body,
   Controller,
-  HttpException,
-  HttpStatus,
   Param,
+  UseFilters,
 } from '@nestjs/common';
-import { Delete, Get, Patch, Post } from '@nestjs/common';
 import { ParseIntPipe } from '@nestjs/common/pipes';
+import { DuplicateOrderFilter } from 'src/order-tracking/exception-filters/duplicate.exception';
 import { EditOrderDto, NewOrderDto } from './dtos';
-import { OrderArrayDto } from './dtos/order-array.dto';
+import { DeleteOrderDto } from './dtos/delete-order.dto';
 import { OrderTrackingService } from './order-tracking.service';
 
 @Controller('order-tracking')
@@ -36,6 +39,7 @@ export class OrderTrackingController {
   }
 
   @Post('/upload')
+  @UseFilters(DuplicateOrderFilter)
   uploadOrders(@Body() orderDetails: NewOrderDto) {
     return this.otService.uploadOrders(orderDetails);
   }
@@ -45,8 +49,8 @@ export class OrderTrackingController {
     return this.otService.updateOrder(updateDetails);
   }
 
-  @Delete('/delete/:orderId')
-  deleteOrderById(@Param('orderId', ParseIntPipe) orderId: number) {
-    return this.otService.deleteOrderById(orderId);
+  @Post('/delete')
+  deleteOrderById(@Body() deleteOrderDto: DeleteOrderDto) {
+    return this.otService.deleteOrderById(deleteOrderDto);
   }
 }
