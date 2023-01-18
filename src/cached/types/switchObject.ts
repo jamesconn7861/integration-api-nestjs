@@ -1,6 +1,6 @@
 // TODO Add class-validation decorators.
 
-export class SwitchObject {
+export interface SwitchObject {
   id: string;
   switch: number;
   range: string;
