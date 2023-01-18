@@ -4,11 +4,13 @@ import {
   IsAlpha,
   Matches,
   IsArray,
+  ArrayMinSize,
 } from 'class-validator';
 
 export class NewOrderDto {
   @IsNotEmpty()
   @IsArray()
+  @ArrayMinSize(1)
   orderNumbers: number[];
 
   @IsAlpha()
