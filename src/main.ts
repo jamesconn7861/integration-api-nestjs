@@ -5,6 +5,8 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { ValidationPipe } from '@nestjs/common';
+import fastify, { FastifyReply, FastifyRequest } from 'fastify';
+import { bodyLogger } from './middleware/logger/logger';
 
 async function bootstrap() {
   /*
@@ -13,9 +15,18 @@ async function bootstrap() {
     Reverting back to express shouldn't* break any code or at least very little.
   */
 
+  const fastifyInstance = fastify({
+    logger: {
+      file: `./logs/api.log`,
+      // customLevels: {
+      //   vlanChanged: 13,
+      // },
+    },
+  });
+
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter({ logger: true }),
+    new FastifyAdapter(fastifyInstance),
   );
 
   // Added whitelisting to remove unwanted body keys.
