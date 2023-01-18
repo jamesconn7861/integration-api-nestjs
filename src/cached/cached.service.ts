@@ -8,6 +8,20 @@ import {
   VlanObject,
 } from './types';
 
+/*
+The name of the class is a little misleading
+This isn't actually cached data, but data that
+doesn't change very often. This class holds
+the vlan, switch and table schema so that
+we don't have to query the db each time.
+
+If this class does need updated and you
+don't want to restart the whole application,
+Send a request to '/update-app-data' with body:
+'pass': 'upd@t3'. It's not super secure, but it
+prevents things from being updated unintentionally.
+*/
+
 @Injectable()
 export class CachedService {
   constructor(private db: DbService) {

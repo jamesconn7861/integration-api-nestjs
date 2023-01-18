@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { SshService } from 'src/ssh/ssh.service';
+import { SshService } from '../ssh/ssh.service';
 import { SetVlansDto } from './dtos';
-import { SwitchObject, VlanObject } from 'src/cached/types';
+import { SwitchObject, VlanObject } from '../cached/types';
 import { createRangeString, parseSwitchStatus } from './utils';
 import { ChangeParams } from './types';
-import { CachedService } from 'src/cached/cached.service';
+import { CachedService } from '../cached/cached.service';
 
 @Injectable()
 export class VlanChangerService {
@@ -43,8 +43,6 @@ export class VlanChangerService {
     changeParams.skipedPorts = result['skippedPorts'];
 
     let sshCommand = `conf t ; int ${changeParams.rangeString} ; switchport access vlan ${changeParams.vlanId}`;
-    console.log(changeParams);
-    console.log(sshCommand);
 
     const sshResponse: Object = await this.sshClient.sendCommand(
       `conf t ; int ${changeParams.rangeString} ; switchport access vlan ${changeParams.vlanId}`,
@@ -72,10 +70,10 @@ export class VlanChangerService {
     if (!foundSwitch) return;
 
     /*
-      Check wether request was made with the switch number or bench name.
-      If request was made with the switch number, find the exact match and return all ports.
-      If requet was made with the bench name, find the exact match (case insensative) and return pre-configured port range.
-      */
+    Check if request was made with the switch number or bench name.
+    If request was made with the switch number, find the exact match and return all ports.
+    If requet was made with the bench name, find the exact match (case insensative) and return pre-configured port range.
+    */
 
     if (typeof benchId === 'number') {
       return { ...foundSwitch, range: '1-48' };

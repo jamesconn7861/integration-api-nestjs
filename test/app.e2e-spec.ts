@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as pactum from 'pactum';
-import { AppModule } from './../src/app.module';
+import { AppModule } from '../src/app.module';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -16,6 +16,16 @@ describe('AppController (e2e)', () => {
     await app.listen(3003);
 
     pactum.request.setBaseUrl('http://localhost:3003');
+
+    await pactum
+      .spec()
+      .post('/vlan-changer/change')
+      .withBody({
+        user: 'jconn',
+        ports: [1, 1],
+        vlan: 753,
+        benchId: '131',
+      });
   });
 
   describe('AppData', () => {
@@ -85,66 +95,44 @@ describe('AppController (e2e)', () => {
     });
   });
 
-  describe('Order Tracking', () => {
-    describe('Upload order(s)', () => {
-      it('should upload a new order', () => {
+  describe('Vlan Changer', () => {
+    describe('Change vlans', () => {
+      it('should change the vlan.', () => {
         return pactum
           .spec()
-          .post('/orders/upload')
+          .post('/vlan-changer/change')
           .withBody({
-            tech: 'jconn',
-            startTime: new Date()
-              .toISOString()
-              .slice(0, 19)
-              .replace('T', ' ')
-              .toString(),
-            orders: ['712345678', '712345679'],
+            user: 'jconn',
+            ports: [1, 1],
+            vlan: 720,
+            benchId: '131',
           })
-          .expectStatus(201)
-          .inspect();
-      });
+          .expectStatus(201);
+      }, 10000);
     });
 
-    describe('Edit order', () => {
-      it('should edit a order', () => {
+    describe('Check vlans', () => {
+      it('should check the vlans.', () => {
         return pactum
           .spec()
-          .patch('/orders/edit')
-          .withBody({
-            order_number: '712345678',
-            tech: 'jconn',
-            end_time: new Date().toISOString().slice(0, 19).replace('T', ' '),
-            is_active: '0',
-            note: 'testing',
-          })
-          .expectStatus(200);
-      });
-    });
-
-    describe('Delete order(s)', () => {
-      it('should delete orders', () => {
-        return pactum
-          .spec()
-          .delete('/orders/delete')
-          .withBody({
-            orderNumbers: ['712345679'],
-          })
-          .expectStatus(200);
-      });
-    });
-
-    describe('Get orders', () => {
-      it('should get orders by user', () => {
-        return pactum
-          .spec()
-          .get('/orders/jconn')
+          .get('/vlan-changer/131')
           .expectStatus(200)
-          .expectBodyContains('testing');
-      });
+          .expectBodyContains('720')
+          .inspect();
+      }, 12000);
     });
   });
 
-  afterAll(() => {
+  afterAll(async () => {
+    await pactum
+      .spec()
+      .post('/vlan-changer/change')
+      .withBody({
+        user: 'jconn',
+        ports: [1, 1],
+        vlan: 753,
+        benchId: '131',
+      });
     app.close();
   });
 });

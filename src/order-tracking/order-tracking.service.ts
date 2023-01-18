@@ -1,0 +1,99 @@
+import { Injectable } from '@nestjs/common';
+import { ok } from 'assert';
+import { resourceLimits } from 'worker_threads';
+import { DbService } from '../db/db.service';
+import { EditOrderDto, NewOrderDto } from './dtos';
+import { DeleteOrderDto } from './dtos/delete-order.dto';
+
+@Injectable()
+export class OrderTrackingService {
+  constructor(private db: DbService) {}
+
+  async getOrdersByUser(userId: string, isActive: string) {
+    let queryString: string;
+
+    if (userId === 'all') {
+      queryString = `select * from integrationdb.order_tracking where isActive in (${isActive}) Limit 500`;
+    } else {
+      queryString = `select * from integrationdb.order_tracking where tech = '${userId}' and isActive in (${isActive}) Limit 500`;
+    }
+
+    const [rows, _fields] = await this.db.pool.promise().query(queryString);
+    return [rows];
+  }
+
+  async getOrderById(orderId: number) {
+    const [rows, _fields] = await this.db.pool
+      .promise()
+      .query('select * from `order_tracking` where orderId = ?', [orderId]);
+    return [rows];
+  }
+
+  async uploadOrders(dto: NewOrderDto) {
+    let queryString: string;
+    let queryArray: any[][] = [];
+
+    dto.orderNumbers.forEach((orderId: number) => {
+      queryArray.push([
+        orderId,
+        dto.tech,
+        dto.startTime,
+        dto.isActive,
+        dto.hasIssue,
+      ]);
+    });
+
+    if (dto.orderNumbers.length > 1) {
+      queryString =
+        'insert ignore into `order_tracking` (orderId, tech, startTime, isActive, hasIssue) values ?';
+    } else {
+      queryString =
+        'insert into `order_tracking` (orderId, tech, startTime, isActive, hasIssue) values ?';
+    }
+
+    return await this.db.pool.promise().query(queryString, [queryArray]);
+  }
+
+  async updateOrder(dto: EditOrderDto) {
+    let queryArray: string[] = [];
+
+    Object.keys(dto).forEach((oKey: string) => {
+      if (!['orderId', 'tech', 'startTime'].includes(oKey)) {
+        if (typeof dto[oKey] == 'string') {
+          queryArray.push(`${oKey} = "${dto[oKey]}"`);
+        } else {
+          queryArray.push(`${oKey} = ${dto[oKey]}`);
+        }
+      }
+    });
+
+    let queryString: string = `update integrationdb.order_tracking set ${queryArray.join(
+      ', ',
+    )} where orderId = ? and tech = ?`;
+
+    const [results, _err] = await this.db.pool
+      .promise()
+      .query(queryString, [dto.orderId, dto.tech]);
+
+    if (+results['changedRows'] > 0 && +results['affectedRows'] > 0) {
+      return results;
+    } else if (+results['affectedRows'] > 0) {
+      return {
+        message: 'Row already contains requested data. No changes made.',
+      };
+    } else if (+results['affectedRows'] == 0) {
+      return {
+        message: 'Order not found. This is likely due to a invalid username.',
+      };
+    }
+  }
+
+  async deleteOrderById(dto: DeleteOrderDto) {
+    return await this.db.pool
+      .promise()
+      .query('delete from `order_tracking` where orderId in (?) and tech = ?', [
+        dto.orderIds.join(', '),
+        dto.tech,
+      ]);
+  }
+}

@@ -1,3 +1,5 @@
+// TODO add class-validation decorators & default values for missing values
+
 export class ChangeParams {
   user: string;
   benchId: number;

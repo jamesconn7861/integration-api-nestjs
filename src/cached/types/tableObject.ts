@@ -1,4 +1,6 @@
-export class TableObject {
+// TODO Add class-validation decorators.
+
+export interface TableObject {
   id: string;
   displayName?: string;
   notes?: string;
@@ -6,7 +8,8 @@ export class TableObject {
   columns: TableProperites[];
 }
 
-export class TableProperites {
+// TODO Add class-validation decorators and move to independant file.
+export interface TableProperites {
   id: string;
   displayName?: string;
   dataType: string;
