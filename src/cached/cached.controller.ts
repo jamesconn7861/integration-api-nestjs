@@ -3,10 +3,15 @@ import { Body, Param } from '@nestjs/common/decorators';
 import { CachedService } from './cached.service';
 import { ForbiddenException } from '@nestjs/common/exceptions';
 import { UpdateBody } from './dtos';
+import { ConfigService } from '@nestjs/config';
+import * as argon from 'argon2';
 
 @Controller('cached')
 export class CachedController {
-  constructor(private cachedService: CachedService) {}
+  constructor(
+    private cachedService: CachedService,
+    private config: ConfigService,
+  ) {}
 
   @Get('app-data')
   getAppInitData() {
@@ -35,8 +40,12 @@ export class CachedController {
 
   // TODO Add actual authentication for routes. Possibly with JWT and passport.
   @Post('update-app-data')
-  updateAppData(@Body() updateBody: UpdateBody) {
-    if (updateBody.pass != 'upd@t3') {
+  async updateAppData(@Body() updateBody: UpdateBody) {
+    const validPass = await argon.verify(
+      this.config.get('ADMIN_PASS'),
+      updateBody.pass,
+    );
+    if (!validPass) {
       throw new ForbiddenException('Incorrect passcode.');
     }
     this.cachedService.updateCachedData();
