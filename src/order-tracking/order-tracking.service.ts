@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ok } from 'assert';
-import { resourceLimits } from 'worker_threads';
 import { DbService } from '../db/db.service';
 import { EditOrderDto, NewOrderDto } from './dtos';
 import { DeleteOrderDto } from './dtos/delete-order.dto';
@@ -9,13 +7,13 @@ import { DeleteOrderDto } from './dtos/delete-order.dto';
 export class OrderTrackingService {
   constructor(private db: DbService) {}
 
-  async getOrdersByUser(userId: string, isActive: string) {
+  async getOrdersByUser(userId: string, status: number[]) {
     let queryString: string;
 
     if (userId === 'all') {
-      queryString = `select * from integrationdb.order_tracking where isActive in (${isActive}) Limit 500`;
+      queryString = `select * from integrationdb.order_tracking where status in (${status}) Limit 500`;
     } else {
-      queryString = `select * from integrationdb.order_tracking where tech = '${userId}' and isActive in (${isActive}) Limit 500`;
+      queryString = `select * from integrationdb.order_tracking where user = '${userId}' and status in (${status}) Limit 500`;
     }
 
     const [rows, _fields] = await this.db.pool.promise().query(queryString);
@@ -33,22 +31,16 @@ export class OrderTrackingService {
     let queryString: string;
     let queryArray: any[][] = [];
 
-    dto.orderNumbers.forEach((orderId: number) => {
-      queryArray.push([
-        orderId,
-        dto.tech,
-        dto.startTime,
-        dto.isActive,
-        dto.hasIssue,
-      ]);
+    dto.orderIds.forEach((orderId: number) => {
+      queryArray.push([orderId, dto.user, dto.createdAt, dto.status]);
     });
 
-    if (dto.orderNumbers.length > 1) {
+    if (dto.orderIds.length > 1) {
       queryString =
-        'insert ignore into `order_tracking` (orderId, tech, startTime, isActive, hasIssue) values ?';
+        'insert ignore into `order_tracking` (orderId, user, createdAt, status) values ?';
     } else {
       queryString =
-        'insert into `order_tracking` (orderId, tech, startTime, isActive, hasIssue) values ?';
+        'insert into `order_tracking` (orderId, user, createdAt, status) values ?';
     }
 
     return await this.db.pool.promise().query(queryString, [queryArray]);
@@ -69,11 +61,11 @@ export class OrderTrackingService {
 
     let queryString: string = `update integrationdb.order_tracking set ${queryArray.join(
       ', ',
-    )} where orderId = ? and tech = ?`;
+    )} where orderId = ? and user = ?`;
 
     const [results, _err] = await this.db.pool
       .promise()
-      .query(queryString, [dto.orderId, dto.tech]);
+      .query(queryString, [dto.orderId, dto.user]);
 
     if (+results['changedRows'] > 0 && +results['affectedRows'] > 0) {
       return results;
@@ -91,9 +83,9 @@ export class OrderTrackingService {
   async deleteOrderById(dto: DeleteOrderDto) {
     return await this.db.pool
       .promise()
-      .query('delete from `order_tracking` where orderId in (?) and tech = ?', [
+      .query('delete from `order_tracking` where orderId in (?) and user = ?', [
         dto.orderIds.join(', '),
-        dto.tech,
+        dto.user,
       ]);
   }
 }

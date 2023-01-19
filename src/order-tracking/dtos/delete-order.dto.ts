@@ -8,5 +8,5 @@ export class DeleteOrderDto {
 
   @IsNotEmpty()
   @IsAlpha()
-  tech: string;
+  user: string;
 }

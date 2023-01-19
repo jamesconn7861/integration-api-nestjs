@@ -5,8 +5,8 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { ValidationPipe } from '@nestjs/common';
-import fastify, { FastifyReply, FastifyRequest } from 'fastify';
-import { bodyLogger } from './middleware/logger/logger';
+import fastify from 'fastify';
+import { vlanLogger } from './middleware/logger/vlan-logger';
 
 async function bootstrap() {
   /*
@@ -15,14 +15,25 @@ async function bootstrap() {
     Reverting back to express shouldn't* break any code or at least very little.
   */
 
+  const levels = {
+    alert: 70,
+    crit: 60,
+    error: 50,
+    warn: 40,
+    notice: 30,
+    info: 20,
+    vlan: 13,
+  };
+
   const fastifyInstance = fastify({
     logger: {
       file: `./logs/api.log`,
-      // customLevels: {
-      //   vlanChanged: 13,
-      // },
+      customLevels: levels,
+      useOnlyCustomLevels: true,
     },
   });
+
+  fastifyInstance.addHook('preHandler', vlanLogger);
 
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,

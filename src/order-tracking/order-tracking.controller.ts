@@ -1,5 +1,4 @@
 import {
-  Delete,
   Get,
   Patch,
   Post,
@@ -20,17 +19,17 @@ export class OrderTrackingController {
 
   @Get('/user/:userId')
   getOrdersByUser(@Param('userId') userId: string) {
-    return this.otService.getOrdersByUser(userId, '0, 1');
+    return this.otService.getOrdersByUser(userId, [1, 2, 3]);
   }
 
   @Get('/user/active/:userId')
   getActiveOrdersByUser(@Param('userId') userId: string) {
-    return this.otService.getOrdersByUser(userId, '1');
+    return this.otService.getOrdersByUser(userId, [2]);
   }
 
   @Get('/user/closed/:userId')
   getClosedOrdersByUser(@Param('userId') userId: string) {
-    return this.otService.getOrdersByUser(userId, '0');
+    return this.otService.getOrdersByUser(userId, [1]);
   }
 
   @Get('/order/:orderId')
