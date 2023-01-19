@@ -1,13 +1,13 @@
-import { Transform } from 'class-transformer';
 import {
   IsAlpha,
-  IsBoolean,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
   Matches,
 } from 'class-validator';
+import { StatusCodes } from '../enums/statusCodes.enum';
 
 export class EditOrderDto {
   @IsNumber()
@@ -16,23 +16,18 @@ export class EditOrderDto {
 
   @IsAlpha()
   @IsNotEmpty()
-  tech: string;
+  user: string;
 
   @IsOptional()
   @Matches(
     /[0-9]{4}-[0-9]{2}-[0-9]{2}\s[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{1,3})?/,
   )
-  endTime: string;
+  completedAt: string;
 
+  // 1 = completed, 2 = active, 3 = error
   @IsOptional()
-  @IsBoolean()
-  @Transform(({ value }) => !!value)
-  isActive: boolean;
-
-  @IsOptional()
-  @IsBoolean()
-  @Transform(({ value }) => !!value)
-  hasIssue: boolean;
+  @IsEnum(StatusCodes)
+  status: number;
 
   @IsOptional()
   @IsString()
