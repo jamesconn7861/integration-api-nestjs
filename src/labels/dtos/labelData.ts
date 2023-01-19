@@ -1,6 +1,6 @@
 // TODO Add class-validation decoration
 
-import { IsAlpha, IsArray, IsNotEmpty } from 'class-validator';
+import { IsAlpha, IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 export class LabelData {
   @IsNotEmpty()
@@ -8,7 +8,7 @@ export class LabelData {
   user: string;
 
   @IsNotEmpty()
-  @IsAlpha()
+  @IsString()
   table: string;
 
   @IsNotEmpty()
