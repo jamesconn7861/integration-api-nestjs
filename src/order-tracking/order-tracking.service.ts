@@ -50,7 +50,7 @@ export class OrderTrackingService {
     let queryArray: string[] = [];
 
     Object.keys(dto).forEach((oKey: string) => {
-      if (!['orderId', 'tech', 'startTime'].includes(oKey)) {
+      if (!['orderId', 'user', 'createdAt'].includes(oKey)) {
         if (typeof dto[oKey] == 'string') {
           queryArray.push(`${oKey} = "${dto[oKey]}"`);
         } else {
