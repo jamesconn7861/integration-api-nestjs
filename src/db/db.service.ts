@@ -18,13 +18,23 @@ export class DbService {
     IS NO GOOD, CREDENTIALS IMPORTANT, SOMETIMES
     */
 
-    this.pool = createPool({
-      host: config.get('DB_HOST'),
-      database: config.get('DB_DATABASE'),
-      user: config.get('DB_USER'),
-      password: config.get('DB_PASS'),
-      port: config.get('DB_PORT'),
-      connectionLimit: config.get('DB_CONNLIMIT'),
-    });
+    if (config.get('DB_SOCKET')) {
+      this.pool = createPool({
+        socketPath: config.get('DB_SOCKET'),
+        database: config.get('DB_DATABASE'),
+        user: config.get('DB_USER'),
+        password: config.get('DB_PASS'),
+        connectionLimit: config.get('DB_CONNLIMIT'),
+      });
+    } else {
+      this.pool = createPool({
+        host: config.get('DB_HOST'),
+        database: config.get('DB_DATABASE'),
+        user: config.get('DB_USER'),
+        password: config.get('DB_PASS'),
+        port: config.get('DB_PORT'),
+        connectionLimit: config.get('DB_CONNLIMIT'),
+      });
+    }
   }
 }
