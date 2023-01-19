@@ -123,14 +123,13 @@ COMMENT = 'Table stores order numbers and general information label data.';
 -- Table `integrationdb`.`order_tracking`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `integrationdb`.`order_tracking` (
-  `order_number` VARCHAR(50) NOT NULL,
-  `tech` VARCHAR(50) NULL DEFAULT NULL,
-  `start_time` DATETIME NULL DEFAULT NULL,
-  `end_time` DATETIME NULL DEFAULT NULL,
-  `is_active` TINYINT NULL DEFAULT NULL,
-  `has_issue` TINYINT NULL DEFAULT NULL,
-  `note` TEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`order_number`))
+  `orderId` varchar(15) NOT NULL,
+  `user` varchar(35) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `completedAt` datetime DEFAULT NULL,
+  `status` enum('completed','active','error') NOT NULL,
+  `note` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`orderId`)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;

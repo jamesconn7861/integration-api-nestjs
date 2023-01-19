@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { CachedModule } from './cached/cached.module';
 import { SshModule } from './ssh/ssh.module';
 import { VlanChangerModule } from './vlan-changer/vlan-changer.module';
+import { OrderTrackingModule } from './order-tracking/order-tracking.module';
 
 
 @Module({
@@ -19,6 +20,7 @@ import { VlanChangerModule } from './vlan-changer/vlan-changer.module';
     CachedModule,
     SshModule,
     VlanChangerModule,
+    OrderTrackingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

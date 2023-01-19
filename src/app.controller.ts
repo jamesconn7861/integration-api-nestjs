@@ -1,7 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
 
 @Controller()
-export class AppController {
-  constructor(private readonly appService: AppService) {}
-}
+export class AppController {}
+
+// TODO Delete this class if not used before production.
+/*
+Currently don't have any plans for root routes. 
+Possible in the future, but class is easily recreated.
+*/

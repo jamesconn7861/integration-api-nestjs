@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CachedModule } from 'src/cached/cached.module';
-import { SshModule } from 'src/ssh/ssh.module';
+import { CachedModule } from '../cached/cached.module';
+import { SshModule } from '../ssh/ssh.module';
 import { VlanChangerController } from './vlan-changer.controller';
 import { VlanChangerService } from './vlan-changer.service';
 
