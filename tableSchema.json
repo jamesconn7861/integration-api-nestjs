@@ -1,11 +1,11 @@
 {
-    "version": "2.0",
-    "updateDate": "2022-11-22T00:00:00.000Z",
+    "version": "3.0",
+    "updateDate": "2023-01-16T00:00:00.000Z",
     "tables": [
         {
             "id": "asset_tags",
             "displayName": "Asset Tags",
-            "filePaths": ["/MySQL_Labels/MySQL_Asset_Tags.btw"],
+            "paths": ["/MySQL_Labels/MySQL_Asset_Tags.btw"],
             "columns": 
             [
                 {
@@ -37,7 +37,7 @@
         {
             "id": "covestro",
             "displayName": "Covestro",
-            "filePaths": ["/MySQL_Labels/MySQL_Covestro_Tags.btw"],
+            "paths": ["/MySQL_Labels/MySQL_Covestro_Tags.btw"],
             "columns": 
             [
                 {
@@ -59,7 +59,7 @@
             "id": "freeman",
             "displayName": "Freeman",
             "notes": "Use \"laptop\" for all dell PCs.",
-            "filePaths": [
+            "paths": [
                 "/MySQL_Labels/MySQL_Freeman_Tags.btw",
                 "/MySQL_Labels/MySQL_Freeman_Tags_Small.btw",
                 "/MySQL_Labels/MySQL_Freeman_Labels.btw"
@@ -76,7 +76,7 @@
                     "id": "type",
                     "displayName": "Device Type",
                     "dataType": "dropdown",
-                    "source" : ["Laptop", "Mac", "iPad", "Moby"],
+                    "source" : ["Dell", "Mac", "iPad", "Moby"],
                     "nullable": "false"
                 },
                 {
@@ -90,10 +90,9 @@
         {
             "id": "order_numbers",
             "displayName": "Order Numbers",
-            "filePaths": [
+            "paths": [
                 "/MySQL_Labels/MySQL_Order_Numbers.btw",
-                "/MySQL_Labels/MySQL_Order_Numbers_Left.btw",
-                "/MySQL_Labels/MySQL_Order_Numbers_Right.btw"
+                "/MySQL_Labels/MySQL_Order_Numbers_Left.btw"
             ],
             "columns": 
             [
@@ -126,7 +125,7 @@
         {
             "id": "part_and_serial",
             "displayName": "Part With Serial",
-            "filePaths": ["/MySQL_Labels/MySQL_Labels/Part_with_Serial.btw"],
+            "paths": ["/MySQL_Labels/Part_with_Serial.btw"],
             "columns": 
             [
                 {
@@ -152,7 +151,7 @@
         {
             "id": "simmons",
             "displayName": "Simmons",
-            "filePaths": ["/MySQL_Labels/MySQL_Simmons_Tags.btw"],
+            "paths": ["/MySQL_Labels/MySQL_Simmons_Tags.btw"],
             "columns": 
             [
                 {
@@ -184,7 +183,7 @@
             "id": "barcode_and_type",
             "displayName": "Part & Serial Numbers",
             "notes": "Multiplier format no longer requires a \"x\" at the beginning. Please only enter numeric values.",
-            "filePaths": ["/MySQL_Labels/MySQL_Multi_Barcode.btw"],
+            "paths": ["/MySQL_Labels/MySQL_Multi_Barcode.btw"],
             "columns": 
             [
                 {
@@ -228,7 +227,7 @@
             "id": "whirlpool",
             "displayName": "Whirlpool",
             "notes": "Whirlpool tags are each created from unique seeds. If you have already uploaded a serial number, it can not be uploaded again.",
-            "filePaths": [
+            "paths": [
                 "/MySQL_Labels/MySQL_Whirlpool_Tags.btw",
                 "/MySQL_Labels/MySQL_Whirlpool_Labels.btw"
             ],

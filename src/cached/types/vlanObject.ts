@@ -1,4 +1,6 @@
-export class VlanObject {
+// TODO Add class-validation decorators.
+
+export interface VlanObject {
   id: number;
   name: string;
   description: string;
