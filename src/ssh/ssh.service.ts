@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost } from '@nestjs/core';
-import { FastifyBaseLogger, FastifyLogFn } from 'fastify';
+import { FastifyBaseLogger } from 'fastify';
 import { Client } from 'ssh2';
 
 /*
@@ -32,7 +32,7 @@ export class SshService {
   sshConfig: any;
   clientConnected: boolean;
   logger: FastifyBaseLogger;
-  testLogger: logger;
+
   constructor(
     private readonly httpAdatper: HttpAdapterHost,
     private readonly config: ConfigService,
@@ -43,14 +43,28 @@ export class SshService {
     IS NO GOOD, CREDENTIALS IMPORTANT, SOMETIMES
     */
     this.sshConfig = {
-      host: config.get('SSH_HOST'),
-      port: config.get('SSH_PORT'),
-      username: config.get('SSH_USER'),
-      password: config.get('SSH_PASS'),
+      host: this.config.get('SSH_HOST'),
+      port: this.config.get('SSH_PORT'),
+      username: this.config.get('SSH_USER'),
+      password: this.config.get('SSH_PASS'),
     };
 
-    this.logger = this.httpAdatper.httpAdapter.getInstance()
-      .log as FastifyBaseLogger;
+    /*
+      httpAdapter doesn't exist when module is initalized
+      from testing enviroment. This works perfectly fine
+      in production, but added a failsafe so that tests 
+      will pass.
+    */
+    if (this.httpAdatper.httpAdapter) {
+      this.logger = this.httpAdatper.httpAdapter.getInstance()
+        .log as FastifyBaseLogger;
+    } else {
+      this.logger = {
+        info: (message: string) => {
+          console.log(message);
+        },
+      } as FastifyBaseLogger;
+    }
 
     this.createClient();
     this.sshClient.connect(this.sshConfig);
@@ -66,6 +80,7 @@ export class SshService {
   */
   createClient() {
     this.sshClient = new Client();
+
     this.sshClient
       .on('ready', () => {
         this.logger.info('SSH client ready.');
@@ -119,8 +134,4 @@ export class SshService {
       });
     });
   }
-}
-
-interface logger extends FastifyBaseLogger {
-  vlan?: FastifyLogFn;
 }

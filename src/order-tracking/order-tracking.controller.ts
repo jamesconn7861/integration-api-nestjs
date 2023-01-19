@@ -8,7 +8,7 @@ import {
   UseFilters,
 } from '@nestjs/common';
 import { ParseIntPipe } from '@nestjs/common/pipes';
-import { DuplicateOrderFilter } from 'src/order-tracking/exception-filters/duplicate.exception';
+import { DuplicateOrderFilter } from '../order-tracking/exception-filters/duplicate.exception';
 import { EditOrderDto, NewOrderDto } from './dtos';
 import { DeleteOrderDto } from './dtos/delete-order.dto';
 import { OrderTrackingService } from './order-tracking.service';
@@ -22,14 +22,19 @@ export class OrderTrackingController {
     return this.otService.getOrdersByUser(userId, [1, 2, 3]);
   }
 
-  @Get('/user/active/:userId')
+  @Get('/user/:userId/active')
   getActiveOrdersByUser(@Param('userId') userId: string) {
     return this.otService.getOrdersByUser(userId, [2]);
   }
 
-  @Get('/user/closed/:userId')
+  @Get('/user/:userId/closed')
   getClosedOrdersByUser(@Param('userId') userId: string) {
     return this.otService.getOrdersByUser(userId, [1]);
+  }
+
+  @Get('/user/:userId/error')
+  getErrorOrdersByUser(@Param('userId') userId: string) {
+    return this.otService.getOrdersByUser(userId, [3]);
   }
 
   @Get('/order/:orderId')
