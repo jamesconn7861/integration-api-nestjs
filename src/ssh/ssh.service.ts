@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { HttpAdapterHost } from '@nestjs/core';
+import { FastifyBaseLogger, FastifyLogFn } from 'fastify';
 import { Client } from 'ssh2';
 
 /*
@@ -29,7 +31,12 @@ export class SshService {
   sshClient: Client;
   sshConfig: any;
   clientConnected: boolean;
-  constructor(config: ConfigService) {
+  logger: FastifyBaseLogger;
+  testLogger: logger;
+  constructor(
+    private readonly httpAdatper: HttpAdapterHost,
+    private readonly config: ConfigService,
+  ) {
     /* 
     These values are hosted in the .env files.
     DO NOT UPLOAD SECURE CREDENTIALS TO GITHUB!
@@ -41,6 +48,9 @@ export class SshService {
       username: config.get('SSH_USER'),
       password: config.get('SSH_PASS'),
     };
+
+    this.logger = this.httpAdatper.httpAdapter.getInstance()
+      .log as FastifyBaseLogger;
 
     this.createClient();
     this.sshClient.connect(this.sshConfig);
@@ -58,7 +68,7 @@ export class SshService {
     this.sshClient = new Client();
     this.sshClient
       .on('ready', () => {
-        console.log('SSH client ready.');
+        this.logger.info('SSH client ready.');
         this.clientConnected = true;
       })
       .on('error', (err) => {
@@ -72,7 +82,7 @@ export class SshService {
   }
 
   cleanupClient() {
-    console.log(
+    this.logger.info(
       'SSH client disconnected. Client will be reconnected on next request.',
     );
     this.sshClient.destroy();
@@ -109,4 +119,8 @@ export class SshService {
       });
     });
   }
+}
+
+interface logger extends FastifyBaseLogger {
+  vlan?: FastifyLogFn;
 }
