@@ -39,10 +39,7 @@ export class VlanChangerService {
     if (err) return err['message'];
 
     let result = await createRangeString(changeParams);
-    changeParams.rangeString = result['rangeString'];
-    changeParams.skipedPorts = result['skippedPorts'];
-
-    let sshCommand = `conf t ; int ${changeParams.rangeString} ; switchport access vlan ${changeParams.vlanId}`;
+    changeParams = { ...changeParams, ...result };
 
     const sshResponse: Object = await this.sshClient.sendCommand(
       `conf t ; int ${changeParams.rangeString} ; switchport access vlan ${changeParams.vlanId}`,
@@ -52,7 +49,7 @@ export class VlanChangerService {
       return sshResponse;
     }
 
-    if (changeParams.skipedPorts.length > 0) {
+    if (changeParams.skipedPorts && changeParams.skipedPorts.length > 0) {
       return {
         stdOut: `Locked ports detected. The following port(s) were not changed: (${changeParams.skipedPorts.toString()}). Please see Chris or James if these ports need to be changed.`,
       };
@@ -101,8 +98,8 @@ export class VlanChangerService {
     changeParams.switchRange = foundBench.range
       .split('-')
       .map((port) => Number(port)) as [number, number];
-    if (foundBench.lockedPorts != null || foundBench.lockedPorts != undefined) {
-      changeParams.lockedPorts = foundBench.lockedPorts
+    if (foundBench.locked != null || foundBench.locked != undefined) {
+      changeParams.lockedPorts = foundBench.locked
         .split(',')
         .map((port) => Number(port));
     }
