@@ -11,9 +11,9 @@ export class OrderTrackingService {
     let queryString: string;
 
     if (userId === 'all') {
-      queryString = `select * from integrationdb.order_tracking where status in (${status}) Limit 500`;
+      queryString = `select * from order_tracking where status in (${status}) Limit 500`;
     } else {
-      queryString = `select * from integrationdb.order_tracking where user = '${userId}' and status in (${status}) Limit 500`;
+      queryString = `select * from order_tracking where user = '${userId}' and status in (${status}) Limit 500`;
     }
 
     const [rows, _fields] = await this.db.pool.promise().query(queryString);
@@ -59,7 +59,7 @@ export class OrderTrackingService {
       }
     });
 
-    let queryString: string = `update integrationdb.order_tracking set ${queryArray.join(
+    let queryString: string = `update order_tracking set ${queryArray.join(
       ', ',
     )} where orderId = ? and user = ?`;
 
