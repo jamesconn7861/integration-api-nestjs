@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import {
   SwitchObject,
   TableObject,
-  TableProperites,
+  ColumnProperties,
   VlanObject,
 } from './types';
 
@@ -42,7 +42,7 @@ export class CachedService {
     );
 
     tableSchemaData['tables'].forEach((table: any) => {
-      table['columns'] = table['columns'] as TableProperites;
+      table['columns'] = table['columns'] as ColumnProperties;
       this.tableSchema.push(table as TableObject);
     });
 
