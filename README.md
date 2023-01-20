@@ -11,4 +11,10 @@ Ensure all tests in test.e2e pass before submitting pull requests. Any requests 
 ## Deployment
 
 Click the code dropdown and download the zip file. Extract the contents and copy them to the /sdev/API/MySQL_NestJS/integration-api-nestjs folder on the vm server.
-Allow files to overwrite old file. Open a terminal and navigate to the same folder and run "npm run build". PM2 should detect the changes and automatically restart the service. 
+Allow files to overwrite old file. Open a terminal and run:
+
+```
+npm run build
+```
+
+PM2 should detect the changes and automatically restart the service.
