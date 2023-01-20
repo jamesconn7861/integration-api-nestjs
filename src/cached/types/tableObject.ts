@@ -5,11 +5,11 @@ export interface TableObject {
   displayName?: string;
   notes?: string;
   filePaths?: string[];
-  columns: TableProperites[];
+  columns: ColumnProperties[];
 }
 
 // TODO Add class-validation decorators and move to independant file.
-export interface TableProperites {
+export interface ColumnProperties {
   id: string;
   displayName?: string;
   dataType: string;

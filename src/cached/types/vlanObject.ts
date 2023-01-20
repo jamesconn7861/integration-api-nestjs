@@ -7,5 +7,5 @@ export interface VlanObject {
   notes: string;
   department: string;
   protected: boolean;
-  popularity: number;
+  visibility: number;
 }

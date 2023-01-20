@@ -6,5 +6,6 @@ export interface SwitchObject {
   range: string;
   department: string;
   notes: string;
-  lockedPorts: string;
+  locked: string;
+  visibility: number;
 }
