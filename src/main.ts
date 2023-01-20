@@ -25,9 +25,12 @@ async function bootstrap() {
     vlan: 13,
   };
 
+  let env = process.env.NODE_ENV || 'dev';
+  let logPath: string = env == 'dev' ? `./logs/api.log` : `./logs/debug.log`;
+
   const fastifyInstance = fastify({
     logger: {
-      file: `./logs/api.log`,
+      file: logPath,
       customLevels: levels,
       useOnlyCustomLevels: true,
     },
