@@ -37,8 +37,12 @@ export class CachedService {
     this.switchSchema = [];
     this.tableSchema = [];
 
+    let env = process.env.NODE_ENV || 'dev';
+    let filePath: string =
+      env == 'dev' ? '../../../tableSchema.json' : '/../../tableSchema.json';
+
     let tableSchemaData = JSON.parse(
-      fs.readFileSync(__dirname + '../../../tableSchema.json').toString(),
+      fs.readFileSync(__dirname + filePath).toString(),
     );
 
     tableSchemaData['tables'].forEach((table: any) => {
