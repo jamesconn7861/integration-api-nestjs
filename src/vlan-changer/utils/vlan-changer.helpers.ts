@@ -6,11 +6,15 @@ import { ChangeParams } from '../types';
   much more readable.
 */
 
-async function createRangeString(changeParams: ChangeParams) {
+async function createRangeString(
+  changeParams: ChangeParams,
+): Promise<rangeResults> {
   let baseString: string = `eth${changeParams.benchId}/1`;
 
   if (changeParams.lockedPorts == undefined) {
-    return `${baseString}/${changeParams.reqRange[0]}-${changeParams.reqRange[1]}`;
+    return {
+      rangeString: `${baseString}/${changeParams.reqRange[0]}-${changeParams.reqRange[1]}`,
+    } as rangeResults;
   } else {
     let ranges: string[] = [];
     let startPort: number = null;
@@ -52,6 +56,11 @@ async function createRangeString(changeParams: ChangeParams) {
       skippedPorts: skippedPorts as number[],
     };
   }
+}
+
+interface rangeResults {
+  rangeString: string;
+  skippedPorts: number[];
 }
 
 /*
