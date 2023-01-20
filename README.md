@@ -18,3 +18,9 @@ npm run build
 ```
 
 PM2 should detect the changes and automatically restart the service.
+
+If any new node modules were added to the update, navigate to the main folder and run the following before build:
+
+```
+npm install
+```
