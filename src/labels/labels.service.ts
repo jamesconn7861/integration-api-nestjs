@@ -10,7 +10,7 @@ export class LabelsService {
     const [rows, _fields] = await this.db.pool
       .promise()
       .query(`select * from ${tableId} where username = ?`, [userId]);
-    return [rows];
+    return rows;
   }
 
   async uploadLabels(labelData: LabelData) {
