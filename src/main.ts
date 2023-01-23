@@ -53,6 +53,7 @@ async function bootstrap() {
     }),
   );
 
+  app.enableCors();
   // TODO Change this to the correct port before production build
   await app.listen(3000);
 }
