@@ -17,19 +17,19 @@ export class OrderTrackingService {
     }
 
     const [rows, _fields] = await this.db.pool.promise().query(queryString);
-    return [rows];
+    return rows;
   }
 
   async getOrderById(orderId: number) {
     const [rows, _fields] = await this.db.pool
       .promise()
       .query('select * from `order_tracking` where orderId = ?', [orderId]);
-    return [rows];
+    return rows;
   }
 
   async uploadOrders(dto: NewOrderDto) {
     let queryString: string;
-    let queryArray: any[][] = [];
+    const queryArray: any[][] = [];
 
     dto.orderIds.forEach((orderId: number) => {
       queryArray.push([orderId, dto.user, dto.createdAt, dto.status]);
@@ -47,7 +47,7 @@ export class OrderTrackingService {
   }
 
   async updateOrder(dto: EditOrderDto) {
-    let queryArray: string[] = [];
+    const queryArray: string[] = [];
 
     Object.keys(dto).forEach((oKey: string) => {
       if (!['orderId', 'user', 'createdAt'].includes(oKey)) {
@@ -59,7 +59,7 @@ export class OrderTrackingService {
       }
     });
 
-    let queryString: string = `update order_tracking set ${queryArray.join(
+    const queryString = `update order_tracking set ${queryArray.join(
       ', ',
     )} where orderId = ? and user = ?`;
 

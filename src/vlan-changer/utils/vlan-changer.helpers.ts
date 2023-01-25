@@ -9,16 +9,16 @@ import { ChangeParams } from '../types';
 async function createRangeString(
   changeParams: ChangeParams,
 ): Promise<rangeResults> {
-  let baseString: string = `eth${changeParams.benchId}/1`;
+  const baseString = `eth${changeParams.benchId}/1`;
 
   if (changeParams.lockedPorts == undefined) {
     return {
       rangeString: `${baseString}/${changeParams.reqRange[0]}-${changeParams.reqRange[1]}`,
     } as rangeResults;
   } else {
-    let ranges: string[] = [];
+    const ranges: string[] = [];
     let startPort: number = null;
-    let skippedPorts = [];
+    const skippedPorts = [];
 
     for (
       let i: number = changeParams.reqRange[0];
@@ -84,7 +84,7 @@ async function parseSwitchStatus(
   const switchPorts: string[] = swtichStatusString.split(/\r?\n/);
 
   switchPorts.forEach((port: string) => {
-    let portNumber = +port.slice(0, 14).trim().split('/').pop();
+    const portNumber = +port.slice(0, 14).trim().split('/').pop();
     if (isNaN(portNumber)) return;
     if (
       (rangeFilter && portNumber < +rangeFilter[0]) ||

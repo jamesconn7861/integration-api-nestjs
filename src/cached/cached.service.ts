@@ -37,11 +37,11 @@ export class CachedService {
     this.switchSchema = [];
     this.tableSchema = [];
 
-    let env = process.env.NODE_ENV || 'dev';
-    let filePath: string =
+    const env = process.env.NODE_ENV || 'dev';
+    const filePath: string =
       env == 'dev' ? '../../../tableSchema.json' : '/../../tableSchema.json';
 
-    let tableSchemaData = JSON.parse(
+    const tableSchemaData = JSON.parse(
       fs.readFileSync(__dirname + filePath).toString(),
     );
 

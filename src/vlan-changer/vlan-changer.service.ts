@@ -14,7 +14,7 @@ export class VlanChangerService {
   ) {}
 
   async getPortsByBench(benchId: string) {
-    let foundBench: SwitchObject = await this.findSwitch(benchId);
+    const foundBench: SwitchObject = await this.findSwitch(benchId);
 
     if (!foundBench) {
       return { stdErr: 'Invalid bench / switch id.' };
@@ -38,7 +38,7 @@ export class VlanChangerService {
     let [err, changeParams] = await this.validateRequest(setVlansDto);
     if (err) return err['message'];
 
-    let result = await createRangeString(changeParams);
+    const result = await createRangeString(changeParams);
     changeParams = { ...changeParams, ...result };
 
     const sshResponse: Object = await this.sshClient.sendCommand(
@@ -61,7 +61,7 @@ export class VlanChangerService {
   }
 
   async findSwitch(benchId: string | number): Promise<SwitchObject> {
-    let foundSwitch: SwitchObject =
+    const foundSwitch: SwitchObject =
       this.cachedService.getBenchSchemaById(benchId);
 
     if (!foundSwitch) return;
@@ -80,7 +80,7 @@ export class VlanChangerService {
   }
 
   async validateRequest(setVlansDto: SetVlansDto): Promise<[{}, ChangeParams]> {
-    let changeParams: ChangeParams = {} as ChangeParams;
+    const changeParams: ChangeParams = {} as ChangeParams;
     // Check for valid user id
     if (
       [null, undefined, ''].includes(setVlansDto.user) ||
@@ -91,7 +91,7 @@ export class VlanChangerService {
     changeParams.user = setVlansDto.user;
 
     // Check for valid bench id
-    let foundBench = await this.findSwitch(setVlansDto.benchId);
+    const foundBench = await this.findSwitch(setVlansDto.benchId);
     if (!foundBench)
       return [{ message: 'Invalid bench / switch id.' }, undefined];
     changeParams.benchId = foundBench.switch;
@@ -105,14 +105,14 @@ export class VlanChangerService {
     }
 
     // Check for valid vlan
-    let foundVlan: VlanObject = this.cachedService.getVlanSchemaById(
+    const foundVlan: VlanObject = this.cachedService.getVlanSchemaById(
       setVlansDto.vlan,
     );
     if (!foundVlan) return [{ message: 'Invalid vlan id.' }, undefined];
     changeParams.vlanId = foundVlan.id;
 
     // Check for valid port range
-    let range = foundBench.range.split('-').map((port) => +port);
+    const range = foundBench.range.split('-').map((port) => +port);
     if (setVlansDto.ports[0] < range[0] || setVlansDto.ports[0] > range[1]) {
       return [{ message: 'Starting port out of valid range.' }, undefined];
     }
