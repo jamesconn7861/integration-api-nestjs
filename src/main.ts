@@ -7,6 +7,7 @@ import {
 import { ValidationPipe } from '@nestjs/common';
 import fastify from 'fastify';
 import { vlanLogger } from './middleware/logger/vlan-logger';
+import fastifyCookie from '@fastify/cookie';
 
 async function bootstrap() {
   /*
@@ -42,6 +43,10 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(fastifyInstance),
   );
+
+  await app.register(fastifyCookie, {
+    secret: 'fastify-|secret*|-cookie',
+  });
 
   // Added whitelisting to remove unwanted body keys.
   app.useGlobalPipes(
