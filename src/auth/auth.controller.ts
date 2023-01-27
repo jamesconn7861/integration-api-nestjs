@@ -6,22 +6,41 @@ import { SignUp, SignIn } from './dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  cookieParams: {};
+  constructor(private authService: AuthService) {
+    this.cookieParams = {
+      domain: 'integration-toolkit.pomeroy.com',
+      path: '/',
+      secure: true,
+      httpOnly: true,
+      expires: new Date(new Date().setHours(new Date().getHours() + 24)),
+    };
+  }
 
   @Post('signup')
-  signup(
+  async signup(
     @Body() dto: SignUp,
     @Res({ passthrough: true }) response: FastifyReply,
   ) {
-    return this.authService.signup(dto, response);
+    const result = await this.authService.signin(dto);
+
+    response.setCookie('access_token', result.access_token, this.cookieParams);
+    response.setCookie('current_user', result.user.username, this.cookieParams);
+
+    return result;
   }
 
   @HttpCode(HttpStatus.OK)
   @Post('signin')
-  signin(
+  async signin(
     @Body() dto: SignIn,
     @Res({ passthrough: true }) response: FastifyReply,
   ) {
-    return this.authService.signin(dto, response);
+    const result = await this.authService.signin(dto);
+
+    response.setCookie('access_token', result.access_token, this.cookieParams);
+    response.setCookie('current_user', result.user.username, this.cookieParams);
+
+    return result;
   }
 }
