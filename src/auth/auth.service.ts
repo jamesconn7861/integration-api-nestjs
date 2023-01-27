@@ -5,7 +5,6 @@ import { ForbiddenException } from '@nestjs/common/exceptions';
 import { JwtService } from '@nestjs/jwt/dist';
 import { ConfigService } from '@nestjs/config/dist/config.service';
 import { DbService } from 'src/db/db.service';
-import fastify, { FastifyReply } from 'fastify';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +14,7 @@ export class AuthService {
     private config: ConfigService,
   ) {}
 
-  async signup(dto: SignUp, res: FastifyReply) {
+  async signup(dto: SignUp) {
     // genereate the password hash
     const hash = await argon.hash(dto.password);
     // save the new user in the db
@@ -31,9 +30,6 @@ export class AuthService {
       const accessToken = (await this.signToken(userId, dto.email))
         .access_token;
 
-      res.setCookie('access_token', accessToken);
-      res.setCookie('current_user', dto.username);
-
       return {
         access_token: accessToken,
         user: { id: userId, username: dto.username, email: dto.email },
@@ -43,7 +39,7 @@ export class AuthService {
     }
   }
 
-  async signin(dto: SignIn, res: FastifyReply) {
+  async signin(dto: SignIn) {
     // find the user by email
     const queryString = dto.email
       ? 'select distinct * from users where email = ?'
@@ -63,9 +59,6 @@ export class AuthService {
 
     const accessToken = (await this.signToken(user.id, user.email))
       .access_token;
-
-    res.setCookie('access_token', accessToken);
-    res.setCookie('current_user', dto.username);
 
     return { access_token: accessToken, user };
   }
