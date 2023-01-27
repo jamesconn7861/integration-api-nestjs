@@ -17,18 +17,17 @@ export class AuthService {
   async signup(dto: SignUp) {
     // genereate the password hash
     const hash = await argon.hash(dto.password);
-
     // save the new user in the db
     try {
-      const user = await this.dbService.pool
+      const [res, _] = await this.dbService.pool
         .promise()
         .query(`insert into users (username, email, hash) values ?`, [
-          dto.username,
-          dto.email,
-          hash,
+          [[dto.username, dto.email, hash]],
         ]);
 
-      return this.signToken(user.id, user.email);
+      const userId = res.insertId;
+
+      return this.signToken(userId, dto.email);
     } catch (error) {
       return 'Username or email already in use.';
     }
@@ -37,12 +36,13 @@ export class AuthService {
   async signin(dto: SignIn) {
     // find the user by email
     const queryString = dto.email
-      ? 'select distinct from users where email = ?'
-      : 'select distinct from users where username = ?';
+      ? 'select distinct * from users where email = ?'
+      : 'select distinct * from users where username = ?';
 
-    const user = await this.dbService.pool
+    const [records, _] = await this.dbService.pool
       .promise()
       .query(queryString, dto.email || dto.username);
+    const user = records[0];
     // if user does not exist throw exception
     if (!user) throw new ForbiddenException('Credentials incorrect');
     // compare password
