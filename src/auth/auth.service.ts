@@ -5,6 +5,7 @@ import { ForbiddenException } from '@nestjs/common/exceptions';
 import { JwtService } from '@nestjs/jwt/dist';
 import { ConfigService } from '@nestjs/config/dist/config.service';
 import { DbService } from 'src/db/db.service';
+import fastify, { FastifyReply } from 'fastify';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +15,7 @@ export class AuthService {
     private config: ConfigService,
   ) {}
 
-  async signup(dto: SignUp) {
+  async signup(dto: SignUp, res: FastifyReply) {
     // genereate the password hash
     const hash = await argon.hash(dto.password);
     // save the new user in the db
@@ -27,13 +28,22 @@ export class AuthService {
 
       const userId = res.insertId;
 
-      return this.signToken(userId, dto.email);
+      const accessToken = (await this.signToken(userId, dto.email))
+        .access_token;
+
+      res.setCookie('access_token', accessToken);
+      res.setCookie('current_user', dto.username);
+
+      return {
+        access_token: accessToken,
+        user: { id: userId, username: dto.username, email: dto.email },
+      };
     } catch (error) {
-      return 'Username or email already in use.';
+      throw new ForbiddenException('Credentials already taken.');
     }
   }
 
-  async signin(dto: SignIn) {
+  async signin(dto: SignIn, res: FastifyReply) {
     // find the user by email
     const queryString = dto.email
       ? 'select distinct * from users where email = ?'
@@ -49,8 +59,15 @@ export class AuthService {
     const pwMatches = await argon.verify(user.hash, dto.password);
     // if password incorrect throw exception
     if (!pwMatches) throw new ForbiddenException('Credentials incorrect');
+    delete user.hash;
 
-    return this.signToken(user.id, user.email);
+    const accessToken = (await this.signToken(user.id, user.email))
+      .access_token;
+
+    res.setCookie('access_token', accessToken);
+    res.setCookie('current_user', dto.username);
+
+    return { access_token: accessToken, user };
   }
 
   async signToken(
