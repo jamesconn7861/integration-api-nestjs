@@ -22,7 +22,7 @@ export class AuthController {
     @Body() dto: SignUp,
     @Res({ passthrough: true }) response: FastifyReply,
   ) {
-    const result = await this.authService.signin(dto);
+    const result = await this.authService.signup(dto);
 
     response.setCookie('access_token', result.access_token, this.cookieParams);
     response.setCookie('current_user', result.user.username, this.cookieParams);

@@ -22,7 +22,7 @@ export class AuthService {
       const [res, _] = await this.dbService.pool
         .promise()
         .query(`insert into users (username, email, hash) values ?`, [
-          [[dto.username, dto.email, hash]],
+          [[dto.username.toLowerCase(), dto.email.toLowerCase(), hash]],
         ]);
 
       const userId = res.insertId;
@@ -47,7 +47,7 @@ export class AuthService {
 
     const [records, _] = await this.dbService.pool
       .promise()
-      .query(queryString, dto.email || dto.username);
+      .query(queryString, dto.email || dto.username.toLowerCase());
     const user = records[0];
     // if user does not exist throw exception
     if (!user) throw new ForbiddenException('Credentials incorrect');
