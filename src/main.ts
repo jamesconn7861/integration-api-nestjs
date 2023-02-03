@@ -8,6 +8,7 @@ import { ValidationPipe } from '@nestjs/common';
 import fastify from 'fastify';
 import { vlanLogger } from './middleware/logger/vlan-logger';
 import fastifyCookie from '@fastify/cookie';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   /*
@@ -57,6 +58,14 @@ async function bootstrap() {
       },
     }),
   );
+
+  // const config = new DocumentBuilder()
+  //   .setTitle('Integration Toolkit API')
+  //   .setDescription('API routes for Integration Toolkit data')
+  //   .setVersion('1.0')
+  //   .build();
+  // const document = SwaggerModule.createDocument(app, config);
+  // SwaggerModule.setup('api', app, document);
 
   app.enableCors();
   // TODO Change this to the correct port before production build

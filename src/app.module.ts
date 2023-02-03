@@ -9,6 +9,8 @@ import { SshModule } from './ssh/ssh.module';
 import { VlanChangerModule } from './vlan-changer/vlan-changer.module';
 import { OrderTrackingModule } from './order-tracking/order-tracking.module';
 import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { AuthModule } from './auth/auth.module';
     SshModule,
     VlanChangerModule,
     OrderTrackingModule,
+    UsersModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

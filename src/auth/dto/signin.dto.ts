@@ -6,7 +6,7 @@ import {
   ValidateIf,
 } from 'class-validator';
 
-export class SignIn {
+export class SignInDto {
   @ValidateIf((o) => !o.email || o.username)
   @IsString()
   @MinLength(3)

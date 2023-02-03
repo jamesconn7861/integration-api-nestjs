@@ -1,20 +1,44 @@
 import { Injectable } from '@nestjs/common';
-import { SignIn, SignUp } from './dto';
+import { SignUpDto, SignInDto } from './dto';
 import * as argon from 'argon2';
 import { ForbiddenException } from '@nestjs/common/exceptions';
-import { JwtService } from '@nestjs/jwt/dist';
-import { ConfigService } from '@nestjs/config/dist/config.service';
+import { JwtService } from '@nestjs/jwt';
 import { DbService } from 'src/db/db.service';
+import { User } from './types/user';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private dbService: DbService,
-    private jwt: JwtService,
-    private config: ConfigService,
-  ) {}
+  constructor(private dbService: DbService, private jwtService: JwtService) {}
 
-  async signup(dto: SignUp) {
+  async validateUser(signInDto: SignInDto) {
+    // Decide if user used email or username to login
+    const queryString = signInDto.email
+      ? 'select distinct * from users where email = ?'
+      : 'select distinct * from users where username = ?';
+
+    const [records] = await this.dbService.pool
+      .promise()
+      .query(
+        queryString,
+        signInDto.email
+          ? signInDto.email.toLowerCase()
+          : signInDto.username.toLowerCase(),
+      );
+
+    if ((records as []).length == 0) {
+      throw new ForbiddenException('Credentials incorrect');
+    }
+
+    const user = records[0];
+
+    // compare password
+    const pwMatches = await argon.verify(user.hash, signInDto.password);
+    // if password incorrect throw exception
+    if (!pwMatches) throw new ForbiddenException('Credentials incorrect');
+    return user;
+  }
+
+  async signup(dto: SignUpDto) {
     // genereate the password hash
     const hash = await argon.hash(dto.password);
     // save the new user in the db
@@ -27,58 +51,29 @@ export class AuthService {
 
       const userId = res.insertId;
 
-      const accessToken = (await this.signToken(userId, dto.email))
-        .access_token;
-
       return {
-        access_token: accessToken,
-        user: { id: userId, username: dto.username, email: dto.email },
+        access_token: await this.jwtService.signAsync({
+          username: dto.username,
+          sub: userId,
+        }),
+        userId,
       };
     } catch (error) {
       throw new ForbiddenException('Credentials already taken.');
     }
   }
 
-  async signin(dto: SignIn) {
-    // find the user by email
-    const queryString = dto.email
-      ? 'select distinct * from users where email = ?'
-      : 'select distinct * from users where username = ?';
-
-    const [records, _] = await this.dbService.pool
-      .promise()
-      .query(queryString, dto.email || dto.username.toLowerCase());
-    const user = records[0];
-    // if user does not exist throw exception
-    if (!user) throw new ForbiddenException('Credentials incorrect');
-    // compare password
-    const pwMatches = await argon.verify(user.hash, dto.password);
-    // if password incorrect throw exception
-    if (!pwMatches) throw new ForbiddenException('Credentials incorrect');
-    delete user.hash;
-
-    const accessToken = (await this.signToken(user.id, user.email))
-      .access_token;
-
-    return { access_token: accessToken, user };
-  }
-
-  async signToken(
-    userId: number,
-    email: string,
-  ): Promise<{ access_token: string }> {
-    const payload = {
-      sub: userId,
-      email,
-    };
-    const secret = this.config.get('JWT_SECRET');
-    const token = await this.jwt.signAsync(payload, {
-      expiresIn: '1d',
-      secret: secret,
-    });
-
+  async signin(signInDto: SignInDto) {
+    const user: User = await this.validateUser(signInDto);
+    const payload = { username: user.username, sub: user.id };
     return {
-      access_token: token,
+      access_token: await this.jwtService.signAsync(payload),
+      user: {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        level: user.level,
+      },
     };
   }
 }

@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@fastify/cookie": "^8.3.0",
+    "@fastify/static": "^6.8.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
@@ -35,6 +36,7 @@
     "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/platform-fastify": "^9.2.1",
+    "@nestjs/swagger": "^6.1.4",
     "@types/ssh2": "^1.11.7",
     "argon2": "^0.30.3",
     "class-transformer": "^0.5.1",
