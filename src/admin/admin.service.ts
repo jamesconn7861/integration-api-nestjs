@@ -85,17 +85,35 @@ export class AdminService {
     }
   }
 
-  async createVlan(createVlanDto: CreateVlanDto) {
+  async createVlan(dto: CreateVlanDto) {
     return await this.db.pool.query(
       `insert into vlans (id, name, description, notes, department, protected, visibility) values ?`,
-      [createVlanDto],
+      [
+        [
+          dto.id,
+          dto.name,
+          dto.description,
+          dto.notes,
+          dto.department,
+          dto.protected,
+          dto.visibility,
+        ],
+      ],
     );
   }
 
-  async createBench(createBenchDto: CreateBenchDto) {
+  async createBench(dto: CreateBenchDto) {
     return await this.db.pool.query(
       `insert into benches (id, switch, \`range\`, department, notes, locked, visibility) values ?`,
-      [createBenchDto],
+      [
+        dto.id,
+        dto.switch,
+        dto.range,
+        dto.department,
+        dto.notes,
+        dto.locked,
+        dto.visibility,
+      ],
     );
   }
 
