@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CachedService } from 'src/cached/cached.service';
 import { DbService } from 'src/db/db.service';
 import {
   CreateBenchDto,
@@ -9,7 +10,7 @@ import {
 
 @Injectable()
 export class AdminService {
-  constructor(private db: DbService) {}
+  constructor(private db: DbService, private cachedService: CachedService) {}
 
   async updateVlan(updateVlanDto: UpdateVlanDto) {
     const queryArray: string[] = [];
@@ -33,6 +34,7 @@ export class AdminService {
       .query(queryString, [updateVlanDto.oldId]);
 
     if (+results['changedRows'] > 0 && +results['affectedRows'] > 0) {
+      this.cachedService.updateVlanSchema();
       return results;
     } else if (+results['affectedRows'] > 0) {
       return {
@@ -73,6 +75,7 @@ export class AdminService {
       .query(queryString, [updateBenchDto.oldId]);
 
     if (+results['changedRows'] > 0 && +results['affectedRows'] > 0) {
+      this.cachedService.updateBenchSchema();
       return results;
     } else if (+results['affectedRows'] > 0) {
       return {
@@ -86,44 +89,65 @@ export class AdminService {
   }
 
   async createVlan(dto: CreateVlanDto) {
-    return await this.db.pool.query(
-      `insert into vlans (id, name, description, notes, department, protected, visibility) values ?`,
-      [
+    const result = await this.db.pool
+      .promise()
+      .query(
+        `insert into vlans (id, name, description, notes, department, protected, visibility) values ?`,
         [
-          dto.id,
-          dto.name,
-          dto.description,
-          dto.notes,
-          dto.department,
-          dto.protected,
-          dto.visibility,
+          [
+            [
+              dto.id,
+              dto.name,
+              dto.description,
+              dto.notes,
+              dto.department,
+              dto.protected,
+              dto.visibility,
+            ],
+          ],
         ],
-      ],
-    );
+      );
+    this.cachedService.updateVlanSchema();
+    return result;
   }
 
   async createBench(dto: CreateBenchDto) {
-    return await this.db.pool.query(
-      `insert into benches (id, switch, \`range\`, department, notes, locked, visibility) values ?`,
-      [
-        dto.id,
-        dto.switch,
-        dto.range,
-        dto.department,
-        dto.notes,
-        dto.locked,
-        dto.visibility,
-      ],
-    );
+    const result = await this.db.pool
+      .promise()
+      .query(
+        `insert into benches (id, switch, \`range\`, department, notes, locked, visibility) values ?`,
+        [
+          [
+            [
+              dto.id,
+              dto.switch,
+              dto.range,
+              dto.department,
+              dto.notes,
+              dto.locked,
+              dto.visibility,
+            ],
+          ],
+        ],
+      );
+
+    this.cachedService.updateBenchSchema();
+    return result;
   }
 
   async deleteVlan(vlanId: string) {
-    return await this.db.pool.query(`delete from vlans where id = ?`, [vlanId]);
+    const result = await this.db.pool
+      .promise()
+      .query(`delete from vlans where id = ?`, [vlanId]);
+    this.cachedService.updateVlanSchema();
+    return result;
   }
 
   async deleteBench(benchId: string) {
-    return await this.db.pool.query(`delete from benches where id = ?`, [
-      benchId,
-    ]);
+    const result = await this.db.pool
+      .promise()
+      .query(`delete from benches where id = ?`, [benchId]);
+    this.cachedService.updateBenchSchema();
+    return result;
   }
 }

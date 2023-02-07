@@ -67,6 +67,30 @@ export class CachedService {
     this.db.pool.releaseConnection(conn);
   }
 
+  async updateBenchSchema() {
+    this.switchSchema = [];
+
+    const [rows, _fields] = await this.db.pool
+      .promise()
+      .query('Select * from `benches`');
+
+    rows.forEach((row: Partial<SwitchObject>) => {
+      this.switchSchema.push(row as SwitchObject);
+    });
+  }
+
+  async updateVlanSchema() {
+    this.vlanSchema = [];
+
+    const [rows, _fields] = await this.db.pool
+      .promise()
+      .query('Select * from `vlans`');
+
+    rows.forEach((row: Partial<VlanObject>) => {
+      this.vlanSchema.push(row as VlanObject);
+    });
+  }
+
   getAppInitData() {
     return {
       tableSchema: this.tableSchema,

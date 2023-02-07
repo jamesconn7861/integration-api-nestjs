@@ -51,7 +51,7 @@ export class AdminController {
 
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtGuard)
-  @Delete('/delete-bench/:vlanId')
+  @Delete('/delete-vlan/:vlanId')
   deleteVlan(@Param('vlanId') vlanId: string) {
     return this.adminService.deleteVlan(vlanId);
   }
