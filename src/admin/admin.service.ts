@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { DbService } from 'src/db/db.service';
-import { UpdateBenchDto, UpdateVlanDto } from './dtos';
+import {
+  CreateBenchDto,
+  CreateVlanDto,
+  UpdateBenchDto,
+  UpdateVlanDto,
+} from './dtos';
 
 @Injectable()
 export class AdminService {
@@ -78,5 +83,29 @@ export class AdminService {
         message: 'Bench not found.',
       };
     }
+  }
+
+  async createVlan(createVlanDto: CreateVlanDto) {
+    return await this.db.pool.query(
+      `insert into vlans (id, name, description, notes, department, protected, visibility) values ?`,
+      [createVlanDto],
+    );
+  }
+
+  async createBench(createBenchDto: CreateBenchDto) {
+    return await this.db.pool.query(
+      `insert into benches (id, switch, \`range\`, department, notes, locked, visibility) values ?`,
+      [createBenchDto],
+    );
+  }
+
+  async deleteVlan(vlanId: string) {
+    return await this.db.pool.query(`delete from vlans where id = ?`, [vlanId]);
+  }
+
+  async deleteBench(benchId: string) {
+    return await this.db.pool.query(`delete from benches where id = ?`, [
+      benchId,
+    ]);
   }
 }

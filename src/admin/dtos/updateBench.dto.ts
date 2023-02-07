@@ -1,31 +1,7 @@
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
-import { VisibilityEnum } from './visibilityEnums';
+import { IsString } from 'class-validator';
+import { CreateBenchDto } from './createBench.dto';
 
-export class UpdateBenchDto {
+export class UpdateBenchDto extends CreateBenchDto {
   @IsString()
   oldId: string;
-
-  @IsString()
-  id: string;
-
-  @IsNumber()
-  switch: number;
-
-  @IsString()
-  range: string;
-
-  @IsString()
-  department: string;
-
-  @IsString()
-  @IsOptional()
-  notes: string;
-
-  @IsString()
-  @IsOptional()
-  locked: string;
-
-  @IsNumber()
-  @IsEnum(VisibilityEnum)
-  visibility: VisibilityEnum;
 }
