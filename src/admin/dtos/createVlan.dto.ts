@@ -1,5 +1,5 @@
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
-import { VisibilityEnum } from './visibilityEnums';
+import { DepartmentEnum, ProtectionEnum, VisibilityEnum } from './vlanEnums';
 
 export class CreateVlanDto {
   @IsNumber()
@@ -16,15 +16,15 @@ export class CreateVlanDto {
   @IsOptional()
   notes: string;
 
-  @IsNumber()
   @IsOptional()
-  department: number;
+  @IsEnum(DepartmentEnum)
+  department: DepartmentEnum = DepartmentEnum.Universal;
 
-  @IsNumber()
   @IsOptional()
-  protected: number;
+  @IsEnum(ProtectionEnum)
+  protected: ProtectionEnum = ProtectionEnum.Unprotected;
 
-  @IsNumber()
+  @IsOptional()
   @IsEnum(VisibilityEnum)
-  visibility: VisibilityEnum;
+  visibility: VisibilityEnum = VisibilityEnum.Visible;
 }
