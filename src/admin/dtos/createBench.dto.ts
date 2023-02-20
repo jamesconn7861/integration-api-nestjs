@@ -1,5 +1,5 @@
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
-import { VisibilityEnum } from './visibilityEnums';
+import { VisibilityEnum } from './vlanEnums';
 
 export class CreateBenchDto {
   @IsString()
@@ -22,7 +22,8 @@ export class CreateBenchDto {
   @IsOptional()
   locked: string;
 
-  @IsNumber()
-  @IsEnum(VisibilityEnum)
-  visibility: VisibilityEnum;
+  // @IsNumber()
+  // @IsEnum(VisibilityEnum)
+  @IsOptional()
+  visibility: string | number;
 }

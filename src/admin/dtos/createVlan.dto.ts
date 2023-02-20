@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { DepartmentEnum, ProtectionEnum, VisibilityEnum } from './vlanEnums';
 
@@ -17,14 +18,17 @@ export class CreateVlanDto {
   notes: string;
 
   @IsOptional()
-  @IsEnum(DepartmentEnum)
-  department: DepartmentEnum = DepartmentEnum.Universal;
+  // @Transform(({ value }) => isNaN(value) ? DepartmentEnum[value] : value)
+  // @IsEnum(DepartmentEnum)
+  department: string | number;
 
   @IsOptional()
-  @IsEnum(ProtectionEnum)
-  protected: ProtectionEnum = ProtectionEnum.Unprotected;
+  // @Transform(({ value }) => (isNaN(value) ? ProtectionEnum[value] : value))
+  // @IsEnum(ProtectionEnum)
+  protected: string | number;
 
   @IsOptional()
-  @IsEnum(VisibilityEnum)
-  visibility: VisibilityEnum = VisibilityEnum.Visible;
+  // @Transform(({ value }) => (isNaN(value) ? VisibilityEnum[value] : value))
+  // @IsEnum(VisibilityEnum)
+  visibility: string | number;
 }
