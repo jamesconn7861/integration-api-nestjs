@@ -58,7 +58,7 @@ export class AdminController {
 
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtGuard)
-  @Post('/delete-bench/:benchId')
+  @Delete('/delete-bench/:benchId')
   deleteBench(@Param('benchId') benchId: string) {
     return this.adminService.deleteBench(benchId);
   }
