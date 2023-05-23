@@ -6,8 +6,6 @@ import {
 } from '@nestjs/platform-fastify';
 import { ValidationPipe } from '@nestjs/common';
 import fastify from 'fastify';
-// import { vlanLogger } from './middleware/logger/vlan-logger';
-import fastifyCookie from '@fastify/cookie';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
@@ -17,27 +15,17 @@ async function bootstrap() {
     Reverting back to express shouldn't* break any code or at least very little.
   */
 
-  const levels = {
-    alert: 70,
-    crit: 60,
-    error: 50,
-    warn: 40,
-    notice: 30,
-    info: 20,
-    vlan: 13,
-  };
-
   const env = process.env.NODE_ENV || 'dev';
   const logPath: string = env == 'dev' ? `./logs/api.log` : `./logs/debug.log`;
 
   const fastifyInstance = fastify({
     logger: {
       file: logPath,
-      customLevels: levels,
-      useOnlyCustomLevels: true,
+      level: 'warn'
     },
   });
 
+  // No need to log all routes, just vlan changes & admin changes.
   // fastifyInstance.addHook('preHandler', vlanLogger);
 
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -45,9 +33,10 @@ async function bootstrap() {
     new FastifyAdapter(fastifyInstance),
   );
 
-  await app.register(fastifyCookie, {
-    secret: 'fastify-|secret*|-cookie',
-  });
+  // Not currently using cookies, will most likely change in the future.
+  // await app.register(fastifyCookie, {
+  //   secret: 'fastify-|secret*|-cookie',
+  // });
 
   // Added whitelisting to remove unwanted body keys.
   app.useGlobalPipes(
