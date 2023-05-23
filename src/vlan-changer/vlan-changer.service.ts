@@ -51,7 +51,7 @@ export class VlanChangerService {
       return sshResponse;
     }
 
-    this.logger.warn("Vlan Change Requested");
+    this.logger.warn({changeParams: setVlansDto}, "Vlan Change Requested");
     
     if (changeParams.skipedPorts && changeParams.skipedPorts.length > 0) {
       return {
