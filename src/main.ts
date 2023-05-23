@@ -7,6 +7,7 @@ import {
 import { ValidationPipe } from '@nestjs/common';
 import fastify from 'fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { vlanLogger } from './middleware/logger/vlan-logger';
 
 async function bootstrap() {
   /*
@@ -52,6 +53,7 @@ async function bootstrap() {
     .setTitle('Integration Toolkit API')
     .setDescription('API routes for Integration Toolkit data')
     .setVersion('1.0')
+    .addServer('https://integration-toolkit.pomeroy.com/dev/api')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);

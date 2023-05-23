@@ -1,4 +1,4 @@
-import { Get, Post, Controller, Param, Body } from '@nestjs/common';
+import { Get, Post, Controller, Param, Body, Logger } from '@nestjs/common';
 import { SetVlansDto } from './dtos';
 import { VlanChangerService } from './vlan-changer.service';
 

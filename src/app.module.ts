@@ -11,7 +11,7 @@ import { OrderTrackingModule } from './order-tracking/order-tracking.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { AdminModule } from './admin/admin.module';
-import { vlanLogger } from './middleware/logger/vlan-logger';
+// import { vlanLogger } from './middleware/logger/vlan-logger';
 
 @Module({
   imports: [
@@ -32,7 +32,7 @@ import { vlanLogger } from './middleware/logger/vlan-logger';
   providers: [AppService],
 })
 export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(vlanLogger).forRoutes({path: 'vlan-changer', method: RequestMethod.POST})
-  }
+  // configure(consumer: MiddlewareConsumer) {
+  //   consumer.apply(vlanLogger).forRoutes({path: 'vlan-changer', method: RequestMethod.POST})
+  // }
 }

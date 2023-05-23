@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { SshService } from '../ssh/ssh.service';
 import { SetVlansDto } from './dtos';
 import { SwitchObject, VlanObject } from '../cached/types';
@@ -12,6 +12,8 @@ export class VlanChangerService {
     private sshClient: SshService,
     private cachedService: CachedService,
   ) {}
+
+  private logger = new Logger(VlanChangerService.name);
 
   async getPortsByBench(benchId: string) {
     const foundBench: SwitchObject = await this.findSwitch(benchId);
@@ -49,6 +51,8 @@ export class VlanChangerService {
       return sshResponse;
     }
 
+    this.logger.warn("Vlan Change Requested");
+    
     if (changeParams.skipedPorts && changeParams.skipedPorts.length > 0) {
       return {
         stdOut: `Locked ports detected. The following port(s) were not changed: (${changeParams.skipedPorts.toString()}). Please see Chris or James if these ports need to be changed.`,
