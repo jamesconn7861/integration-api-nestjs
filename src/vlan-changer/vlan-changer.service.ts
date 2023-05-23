@@ -1,17 +1,18 @@
-import { HttpAdapterHost, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { SshService } from '../ssh/ssh.service';
 import { SetVlansDto } from './dtos';
 import { SwitchObject, VlanObject } from '../cached/types';
 import { createRangeString, parseSwitchStatus } from './utils';
 import { ChangeParams } from './types';
 import { CachedService } from '../cached/cached.service';
+import { HttpAdapterHost } from '@nestjs/core';
 
 @Injectable()
 export class VlanChangerService {
   constructor(
     private sshClient: SshService,
     private cachedService: CachedService,
-    private readonly adapterHost: HttpAdapterHost,
+    private readonly adapterHost: HttpAdapterHost
   ) {}
 
   private logger = new Logger(VlanChangerService.name);
@@ -52,7 +53,7 @@ export class VlanChangerService {
       return sshResponse;
     }
 
-    this.adapterHost.httpAdapter.log(`Vlan changed right now.`);
+    this.adapterHost.httpAdapter.getInstance().log.warn({requestParams: setVlansDto}, 'Vlans Changed');
     
     if (changeParams.skipedPorts && changeParams.skipedPorts.length > 0) {
       return {
