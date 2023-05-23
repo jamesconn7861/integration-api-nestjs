@@ -21,7 +21,7 @@ export class VlanChangerService {
     }
 
     const sshResponse: Object = await this.sshClient.sendCommand(
-      `show int status | grep ${foundBench.switch}`,
+      `show int status | grep Eth${foundBench.switch}`,
     );
 
     if ('stdErr' in sshResponse && sshResponse.stdErr != undefined) {
