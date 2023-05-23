@@ -1,251 +1,242 @@
 {
-    "version": "3.0",
-    "updateDate": "2023-01-16T00:00:00.000Z",
-    "tables": [
+  "version": "3.0",
+  "updateDate": "2023-01-16T00:00:00.000Z",
+  "tables": [
+    {
+      "id": "asset_tags",
+      "displayName": "Asset Tags",
+      "paths": ["/MySQL_Labels/MySQL_Asset_Tags.btw"],
+      "columns": [
         {
-            "id": "asset_tags",
-            "displayName": "Asset Tags",
-            "paths": ["/MySQL_Labels/MySQL_Asset_Tags.btw"],
-            "columns": 
-            [
-                {
-                    "id": "asset_tag",
-                    "displayName": "Asset Tag",
-                    "dataType": "text",
-                    "nullable": false
-                },
-                {
-                    "id": "quantity",
-                    "displayName": "Quantity",
-                    "dataType": "numeric",
-                    "defaultValue": "1"
-                },
-                {
-                    "id": "serialize",
-                    "displayName": "Serialize",
-                    "dataType": "numeric",
-                    "defaultValue": "1"
-                },
-                {
-                    "id": "username",
-                    "dataType": "text",
-                    "nullable": "false",
-                    "hidden" : "true"
-                }
-            ]
+          "id": "asset_tag",
+          "displayName": "Asset Tag",
+          "dataType": "text",
+          "nullable": false
         },
         {
-            "id": "covestro",
-            "displayName": "Covestro",
-            "paths": ["/MySQL_Labels/MySQL_Covestro_Tags.btw"],
-            "columns": 
-            [
-                {
-                    "id": "serial_number",
-                    "displayName": "Serial Number",
-                    "dataType": "text",
-                    "nullable": "false"
-                },
-                {
-                    "id": "username",
-                    "dataType": "text",
-                    "nullable": "false",
-                    "hidden" : "true"
-                    
-                }
-            ]
+          "id": "quantity",
+          "displayName": "Quantity",
+          "dataType": "numeric",
+          "defaultValue": 1
         },
         {
-            "id": "freeman",
-            "displayName": "Freeman",
-            "notes": "Use \"laptop\" for all dell PCs.",
-            "paths": [
-                "/MySQL_Labels/MySQL_Freeman_Tags.btw",
-                "/MySQL_Labels/MySQL_Freeman_Tags_Small.btw",
-                "/MySQL_Labels/MySQL_Freeman_Labels.btw"
-            ],
-            "columns": 
-            [
-                {
-                    "id": "serial_number",
-                    "displayName": "Serial Number",
-                    "dataType": "text",
-                    "nullable": "false"
-                },
-                {
-                    "id": "type",
-                    "displayName": "Device Type",
-                    "dataType": "dropdown",
-                    "source" : ["Dell", "Mac", "iPad", "Moby"],
-                    "nullable": "false"
-                },
-                {
-                    "id": "username",
-                    "dataType": "text",
-                    "nullable": "false",
-                    "hidden" : "true"
-                }
-            ]
+          "id": "serialize",
+          "displayName": "Serialize",
+          "dataType": "numeric",
+          "defaultValue": 1
         },
         {
-            "id": "order_numbers",
-            "displayName": "Order Numbers",
-            "paths": [
-                "/MySQL_Labels/MySQL_Order_Numbers.btw",
-                "/MySQL_Labels/MySQL_Order_Numbers_Left.btw"
-            ],
-            "columns": 
-            [
-                {
-                    "id": "data",
-                    "displayName": "Order Number",
-                    "dataType": "text",
-                    "nullable": "false"
-                },
-                {
-                    "id": "quantity",
-                    "displayName": "Quantity",
-                    "dataType": "numeric",
-                    "defaultValue": "1"
-                },
-                {
-                    "id": "serialize",
-                    "displayName": "Serialize",
-                    "dataType": "numeric",
-                    "defaultValue": "1"
-                },
-                {
-                    "id": "username",
-                    "dataType": "text",
-                    "nullable": "false",
-                    "hidden" : "true"
-                }
-            ]
+          "id": "username",
+          "dataType": "text",
+          "nullable": false,
+          "hidden": true
+        }
+      ]
+    },
+    {
+      "id": "covestro",
+      "displayName": "Covestro",
+      "paths": ["/MySQL_Labels/MySQL_Covestro_Tags.btw"],
+      "columns": [
+        {
+          "id": "serial_number",
+          "displayName": "Serial Number",
+          "dataType": "text",
+          "nullable": false
         },
         {
-            "id": "part_and_serial",
-            "displayName": "Part With Serial",
-            "paths": ["/MySQL_Labels/Part_with_Serial.btw"],
-            "columns": 
-            [
-                {
-                    "id": "part_number",
-                    "displayName": "Part Number",
-                    "dataType": "text",
-                    "nullable": "false"
-                },
-                {
-                    "id": "serial_number",
-                    "displayName": "Serial Number",
-                    "dataType": "text",
-                    "nullable": "false"
-                },
-                {
-                    "id": "username",
-                    "dataType": "text",
-                    "nullable": "false",
-                    "hidden" : "true"
-                }
-            ]
+          "id": "username",
+          "dataType": "text",
+          "nullable": false,
+          "hidden": true
+        }
+      ]
+    },
+    {
+      "id": "freeman",
+      "displayName": "Freeman",
+      "notes": "Use \"laptop\" for all dell PCs.",
+      "paths": [
+        "/MySQL_Labels/MySQL_Freeman_Tags.btw",
+        "/MySQL_Labels/MySQL_Freeman_Tags_Small.btw",
+        "/MySQL_Labels/MySQL_Freeman_Labels.btw"
+      ],
+      "columns": [
+        {
+          "id": "serial_number",
+          "displayName": "Serial Number",
+          "dataType": "text",
+          "nullable": false
         },
         {
-            "id": "simmons",
-            "displayName": "Simmons",
-            "paths": ["/MySQL_Labels/MySQL_Simmons_Tags.btw"],
-            "columns": 
-            [
-                {
-                    "id": "simmons_user",
-                    "displayName": "Simmons User",
-                    "dataType": "text"
-                },
-                {
-                    "id": "serial_number",
-                    "displayName": "Serial Number",
-                    "dataType": "text",
-                    "nullable": "false"
-                },
-                {
-                    "id": "mac_address",
-                    "displayName": "Mac Address",
-                    "dataType": "text",
-                    "nullable": "false"
-                },
-                {
-                    "id": "username",
-                    "dataType": "text",
-                    "hidden" : "true",
-                    "nullable": "false"
-                }
-            ]
+          "id": "type",
+          "displayName": "Device Type",
+          "dataType": "dropdown",
+          "source": ["Dell", "Mac", "iPad", "Moby"],
+          "nullable": false
         },
         {
-            "id": "barcode_and_type",
-            "displayName": "Part & Serial Numbers",
-            "notes": "Multiplier format no longer requires a \"x\" at the beginning. Please only enter numeric values.",
-            "paths": ["/MySQL_Labels/MySQL_Multi_Barcode.btw"],
-            "columns": 
-            [
-                {
-                    "id": "data",
-                    "displayName": "Data",
-                    "dataType": "text",
-                    "nullable": "false"
-                },
-                {
-                    "id": "quantity",
-                    "displayName": "Quantity",
-                    "dataType": "numeric",
-                    "defaultValue": "1"
-                },
-                {
-                    "id": "serialize",
-                    "displayName": "Serialize",
-                    "dataType": "numeric",
-                    "defaultValue": "1"
-                },
-                {
-                    "id": "type",
-                    "displayName": "Type",
-                    "dataType": "text",
-                    "defaultValue": "Part"
-                },
-                {
-                    "id": "multiplier",
-                    "displayName": "Multiplier",
-                    "dataType": "text"
-                },
-                {
-                    "id": "username",
-                    "dataType": "text",
-                    "nullable": "false",
-                    "hidden" : "true"
-                }
-            ]
+          "id": "username",
+          "dataType": "text",
+          "nullable": false,
+          "hidden": true
+        }
+      ]
+    },
+    {
+      "id": "order_numbers",
+      "displayName": "Order Numbers",
+      "paths": [
+        "/MySQL_Labels/MySQL_Order_Numbers.btw",
+        "/MySQL_Labels/MySQL_Order_Numbers_Left.btw"
+      ],
+      "columns": [
+        {
+          "id": "data",
+          "displayName": "Order Number",
+          "dataType": "text",
+          "nullable": false
         },
         {
-            "id": "whirlpool",
-            "displayName": "Whirlpool",
-            "notes": "Whirlpool tags are each created from unique seeds. If you have already uploaded a serial number, it can not be uploaded again.",
-            "paths": [
-                "/MySQL_Labels/MySQL_Whirlpool_Tags.btw",
-                "/MySQL_Labels/MySQL_Whirlpool_Labels.btw"
-            ],
-            "columns": 
-            [
-                {
-                    "id": "serial_number",
-                    "displayName": "Serial Number",
-                    "dataType": "text",
-                    "nullable": "false"
-                },
-                {
-                    "id": "username",
-                    "dataType": "text",
-                    "nullable": "false",
-                    "hidden" : "true"
-                }
-            ]
-        }    
-    ]
-  }
+          "id": "quantity",
+          "displayName": "Quantity",
+          "dataType": "numeric",
+          "defaultValue": 1
+        },
+        {
+          "id": "serialize",
+          "displayName": "Serialize",
+          "dataType": "numeric",
+          "defaultValue": 1
+        },
+        {
+          "id": "username",
+          "dataType": "text",
+          "nullable": false,
+          "hidden": true
+        }
+      ]
+    },
+    {
+      "id": "part_and_serial",
+      "displayName": "Part With Serial",
+      "paths": ["/MySQL_Labels/Part_with_Serial.btw"],
+      "columns": [
+        {
+          "id": "part_number",
+          "displayName": "Part Number",
+          "dataType": "text",
+          "nullable": false
+        },
+        {
+          "id": "serial_number",
+          "displayName": "Serial Number",
+          "dataType": "text",
+          "nullable": false
+        },
+        {
+          "id": "username",
+          "dataType": "text",
+          "nullable": false,
+          "hidden": true
+        }
+      ]
+    },
+    {
+      "id": "simmons",
+      "displayName": "Simmons",
+      "paths": ["/MySQL_Labels/MySQL_Simmons_Tags.btw"],
+      "columns": [
+        {
+          "id": "simmons_user",
+          "displayName": "Simmons User",
+          "dataType": "text"
+        },
+        {
+          "id": "serial_number",
+          "displayName": "Serial Number",
+          "dataType": "text",
+          "nullable": false
+        },
+        {
+          "id": "mac_address",
+          "displayName": "Mac Address",
+          "dataType": "text",
+          "nullable": false
+        },
+        {
+          "id": "username",
+          "dataType": "text",
+          "hidden": true,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "id": "barcode_and_type",
+      "displayName": "Part & Serial Numbers",
+      "notes": "Multiplier format no longer requires a \"x\" at the beginning. Please only enter numeric values.",
+      "paths": ["/MySQL_Labels/MySQL_Multi_Barcode.btw"],
+      "columns": [
+        {
+          "id": "data",
+          "displayName": "Data",
+          "dataType": "text",
+          "nullable": false
+        },
+        {
+          "id": "quantity",
+          "displayName": "Quantity",
+          "dataType": "numeric",
+          "defaultValue": 1
+        },
+        {
+          "id": "serialize",
+          "displayName": "Serialize",
+          "dataType": "numeric",
+          "defaultValue": 1
+        },
+        {
+          "id": "type",
+          "displayName": "Type",
+          "dataType": "text",
+          "defaultValue": "Part"
+        },
+        {
+          "id": "multiplier",
+          "displayName": "Multiplier",
+          "dataType": "text"
+        },
+        {
+          "id": "username",
+          "dataType": "text",
+          "nullable": false,
+          "hidden": true
+        }
+      ]
+    },
+    {
+      "id": "whirlpool",
+      "displayName": "Whirlpool",
+      "notes": "Whirlpool tags are each created from unique seeds. If you have already uploaded a serial number, it can not be uploaded again.",
+      "paths": [
+        "/MySQL_Labels/MySQL_Whirlpool_Tags.btw",
+        "/MySQL_Labels/MySQL_Whirlpool_Labels.btw"
+      ],
+      "columns": [
+        {
+          "id": "serial_number",
+          "displayName": "Serial Number",
+          "dataType": "text",
+          "nullable": false
+        },
+        {
+          "id": "username",
+          "dataType": "text",
+          "nullable": false,
+          "hidden": true
+        }
+      ]
+    }
+  ]
+}
