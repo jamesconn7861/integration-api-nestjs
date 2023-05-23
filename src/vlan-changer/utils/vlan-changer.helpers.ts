@@ -75,6 +75,7 @@ async function parseSwitchStatus(
   swtichStatusString: string,
   rangeFilter?: string[],
 ) {
+  swtichStatusString = swtichStatusString.slice(swtichStatusString.indexOf('Eth'));
   const parsedData: {
     port: number;
     description: string;
