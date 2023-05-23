@@ -6,7 +6,7 @@ import {
 } from '@nestjs/platform-fastify';
 import { ValidationPipe } from '@nestjs/common';
 import fastify from 'fastify';
-import { vlanLogger } from './middleware/logger/vlan-logger';
+// import { vlanLogger } from './middleware/logger/vlan-logger';
 import fastifyCookie from '@fastify/cookie';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -38,7 +38,7 @@ async function bootstrap() {
     },
   });
 
-  fastifyInstance.addHook('preHandler', vlanLogger);
+  // fastifyInstance.addHook('preHandler', vlanLogger);
 
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
@@ -59,13 +59,13 @@ async function bootstrap() {
     }),
   );
 
-  // const config = new DocumentBuilder()
-  //   .setTitle('Integration Toolkit API')
-  //   .setDescription('API routes for Integration Toolkit data')
-  //   .setVersion('1.0')
-  //   .build();
-  // const document = SwaggerModule.createDocument(app, config);
-  // SwaggerModule.setup('api', app, document);
+  const config = new DocumentBuilder()
+    .setTitle('Integration Toolkit API')
+    .setDescription('API routes for Integration Toolkit data')
+    .setVersion('1.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   app.enableCors();
   // TODO Change this to the correct port before production build
