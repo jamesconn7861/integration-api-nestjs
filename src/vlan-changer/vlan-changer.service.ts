@@ -15,8 +15,6 @@ export class VlanChangerService {
     private readonly adapterHost: HttpAdapterHost
   ) {}
 
-  private logger = new Logger(VlanChangerService.name);
-
   async getPortsByBench(benchId: string) {
     const foundBench: SwitchObject = await this.findSwitch(benchId);
 
