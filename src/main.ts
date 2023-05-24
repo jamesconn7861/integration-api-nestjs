@@ -17,7 +17,7 @@ async function bootstrap() {
   */
 
   const env = process.env.NODE_ENV || 'dev';
-  const logPath: string = env == 'dev' ? `./logs/api.log` : `./logs/debug.log`;
+  const logPath: string = env == 'dev' ? `./logs/debug.log` : `./logs/api.log`;
 
   const fastifyInstance = fastify({
     logger: {

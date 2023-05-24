@@ -53,11 +53,11 @@ export class VlanChangerService {
       return sshResponse;
     }
 
-    this.adapterHost.httpAdapter.getInstance().log.warn({requestParams: setVlansDto}, 'Vlans Changed');
-    
-    if (changeParams.skipedPorts && changeParams.skipedPorts.length > 0) {
+    this.adapterHost.httpAdapter.getInstance().log.warn({Request: changeParams}, 'Vlans Changed');
+
+    if (changeParams.skippedPorts && changeParams.skippedPorts.length > 0) {
       return {
-        stdOut: `Locked ports detected. The following port(s) were not changed: (${changeParams.skipedPorts.toString()}). Please see Chris or James if these ports need to be changed.`,
+        stdOut: `Locked ports detected. The following port(s) were not changed: (${changeParams.skippedPorts.toString()}). Please see Chris or James if these ports need to be changed.`,
       };
     } else {
       return {

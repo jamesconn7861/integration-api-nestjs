@@ -7,6 +7,6 @@ export class ChangeParams {
   reqRange: [number, number];
   switchRange: [number, number];
   lockedPorts?: number[];
-  skipedPorts?: number[];
+  skippedPorts?: number[];
   rangeString: string;
 }
