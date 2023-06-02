@@ -39,7 +39,9 @@ function cookieExtractor(req: any) {
   if (req && req.cookies)
   {
       token = req.cookies['Auth'];
-      secureToken = req.signedCookies['Auth'];
+      if (req.signedCookies) {
+        secureToken = req.signedCookies['Auth'];
+      }
   }
   return secureToken || token;
 };
