@@ -12,14 +12,18 @@ export class AuthController {
   async signup(@Res({ passthrough: true }) response: FastifyReply, @Body() dto: SignUpDto) {
     const signupResults = await this.authService.signup(dto);
     if (signupResults.access_token) {
-      response.setCookie('jwt', signupResults.access_token, {httpOnly: true, maxAge: 10800})
+      response.setCookie('Auth', signupResults.access_token, {httpOnly: true, maxAge: 10800})
     }
-    return this.authService.signup(signupResults.userId);
+    return signupResults;
   }
 
   @HttpCode(HttpStatus.OK)
   @Post('signin')
   async signin(@Res({ passthrough: true }) response: FastifyReply, @Body() dto: SignInDto) {
-    return this.authService.signin(dto);
+    const signinResults = await this.authService.signin(dto);
+    if (signinResults.access_token) {
+      response.setCookie('Auth', signinResults.access_token, {httpOnly: true, maxAge: 10800})
+    }
+    return signinResults;
   }
 }
