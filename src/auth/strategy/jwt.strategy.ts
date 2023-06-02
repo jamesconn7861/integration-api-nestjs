@@ -33,14 +33,14 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   // }
 }
 
-function cookieExtractor(req: { cookies: any; signedCookies: { [x: string]: any; }; }) {
-  let token = null;
-  let secureToken = null;
+function cookieExtractor(req: any) {
+  let token: string = null;
+  let secureToken: string = null;
   if (req && req.cookies)
   {
       token = req.cookies['Auth'];
       secureToken = req.signedCookies['Auth'];
   }
-  return secureToken | token;
+  return secureToken || token;
 };
 
