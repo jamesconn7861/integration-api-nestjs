@@ -8,6 +8,7 @@ import { ValidationPipe } from '@nestjs/common';
 import fastify from 'fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { vlanLogger } from './middleware/logger/vlan-logger';
+import cookie from '@fastify/cookie';
 
 async function bootstrap() {
   /*
@@ -59,6 +60,7 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, document);
 
   app.enableCors();
+  app.register(cookie)
   // TODO Change this to the correct port before production build
   await app.listen(3000);
 }
